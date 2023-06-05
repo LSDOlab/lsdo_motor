@@ -6,7 +6,7 @@ and running a minimal example.
 
 ### Installation instructions for users
 
-**Once PyPy is set up**
+**Once PyPI is set up**
 
 For direct installation with all dependencies, run on the terminal or command line
 ```sh
@@ -31,7 +31,7 @@ $ git checkout {branch}
 and adding all your dependencies into the list `install_requires`.
 
 ### Installation instructions for developers
-**PyPy needs to be set up**
+**PyPI needs to be set up**
 
 To install `lsdo_project_template`, first clone the repository and install using pip.
 On the terminal or command line, run

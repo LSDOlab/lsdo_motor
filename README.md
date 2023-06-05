@@ -25,7 +25,7 @@ For direct installation with all dependencies, run on the terminal or command li
 ```sh
 pip install git+https://github.com/suspensemax/lsdo_project_template.git
 ```
-Once PyPy is set up. 
+Once PyPI is set up. 
 For right now: 
 ```sh
 git clone https://github.com/suspensemax/lsdo_motor.git

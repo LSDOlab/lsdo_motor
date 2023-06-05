@@ -16,6 +16,4 @@ and add the example files directly into the toctree of this main examples page.
 :numbered:
 :includehidden:
 
-examples/basic
-examples/advanced
 ```
