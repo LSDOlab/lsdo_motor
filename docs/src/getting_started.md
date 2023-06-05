@@ -5,6 +5,7 @@ and running a minimal example.
 ## Installation
 
 ### Installation instructions for users
+**Once PyPy is set up**
 For direct installation with all dependencies, run on the terminal or command line
 ```sh
 $ pip install git+https://github.com/LSDOlab/lsdo_project_template.git
@@ -14,19 +15,37 @@ If you want users to install a specific branch, run
 $ pip install git+https://github.com/LSDOlab/lsdo_project_template.git@branch
 ```
 
+As of right now use: 
+```sh
+$ git clone https://github.com/suspensemax/lsdo_motor.git
+```
+or for a specific branch
+```sh
+$ git clone http://github.com/suspensemax/lsdo_motor.git
+$ git checkout {branch}
+```
+
 **Enabled by**: Copying the `setup.py` file, changing your repository name and version, 
 and adding all your dependencies into the list `install_requires`.
 
 ### Installation instructions for developers
 To install `lsdo_project_template`, first clone the repository and install using pip.
 On the terminal or command line, run
+**PyPy needs to be set up**
 ```sh
-$ git clone https://github.com/LSDOlab/lsdo_project_template.git
+$ git clone https://github.com/suspensemax/lsdo_motor.git
 $ pip install -e ./lsdo_project_template
 ```
+```sh
+$ git clone https://github.com/suspensemax/lsdo_motor.git
+$ cd lsdo_motor
+$ pip install -e .
+```
+And use a code editor of your choice to edit/deploy code.
+
 **Enabled by**: Copying the setup.py file, and changing your repository name and version.
 
-## Setting up Documentation
+<!-- ## Modifying Documentation
 
 If you are not interested in using this repository as a template but only want to use the documentation template, 
 just copy the `/docs` directory and the `.readthedocs.yaml` file into your package root.
@@ -59,6 +78,6 @@ Optionally, edit the `.readthedocs.yml` in the project root directory for buildi
 After you commit and push, *Read the Docs* will build your package on its servers and once its complete,
 you will see your documentation online.
 The default website address will be generated based on your *Read the Docs* project name as `https://<proj_name>.readthedocs.io/`.
-You can also customize the URL on *Read the Docs*, if needed.
+You can also customize the URL on *Read the Docs*, if needed. -->
 
 ## Setting up Testing

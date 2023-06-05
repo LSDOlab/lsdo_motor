@@ -12,7 +12,7 @@
 [![Forks](https://img.shields.io/github/forks/suspensemax/lsdo_motor.svg)](https://github.com/suspensemax/lsdo_motor/network)
 [![Issues](https://img.shields.io/github/issues/suspensemax/lsdo_motor.svg)](https://github.com/suspensemax/lsdo_motor/issues)
 
-This package provides solvers for low-fidelity PMSMs(Permanent Magnet Synchronous Motors) in the context of NASA's Technical Challenge 1, under the NASA Undergraduate Leadership initiative. These solvers performs optimization using [CSDL](!https://lsdolab.github.io/csdl/). 
+This package provides solvers for low-fidelity PMSMs(Permanent Magnet Synchronous Motors) in the context of NASA's Technical Challenge 1, under the NASA Undergraduate Leadership initiative. These solvers performs optimization using [CSDL](https://lsdolab.github.io/csdl/). 
 
 The Low-Fidelity Motor Model uses two sub-models to analyze the motors in the context of ULI: Sizing and Analysis. This takes into account the geometry of the motors as well as the Inductance and other properties of a motor, and using a Newtonion Solver will optimize the given control methods.  
 
