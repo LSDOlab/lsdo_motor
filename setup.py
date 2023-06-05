@@ -27,20 +27,5 @@ setup(
         'seaborn',
         'matplotlib',
     ],
-    classifiers=[
-        'Programming Language :: Python',
-        'Programming Language :: Python :: 3.7',
-        'Programming Language :: Python :: 3.8',
-        'Programming Language :: Python :: 3.9',
-        'License :: OSI Approved :: MIT',
-        'Operating System :: OS Independent',
-        'Intended Audience :: Developers',
-        'Natural Language :: English',
-        'Topic :: Documentation',
-        'Topic :: Documentation :: Sphinx',
-        'Topic :: Software Development',
-        'Topic :: Software Development :: Documentation',
-        'Topic :: Software Development :: Testing',
-        'Topic :: Software Development :: Libraries',
-    ],
+    
 )
