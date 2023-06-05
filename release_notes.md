@@ -1,5 +1,5 @@
 ***********************************
-# lsdo_motor 0.1.0 (June 5th, 2023)
+# lsdo_motor 0.0.1 (June 5th, 2023)
 
 Summary of major changes from the previous release.
 
