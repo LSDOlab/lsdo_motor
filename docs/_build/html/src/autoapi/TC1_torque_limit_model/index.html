@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TC1_torque_limit_model &mdash; lsdo_motor  documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+        <script src="../../../_static/clipboard.min.js"></script>
+        <script src="../../../_static/copybutton.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980B9" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            lsdo_motor
+          </a>
+              <div class="version">
+                0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../background.html">Background</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/basic.html">1. Basic examples</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/advanced.html">2. Advanced examples</a><ul class="simple">
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API reference</a><ul class="simple">
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980B9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">lsdo_motor</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><code class="xref py py-mod docutils literal notranslate"><span class="pre">TC1_torque_limit_model</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/src/autoapi/TC1_torque_limit_model/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-TC1_torque_limit_model">
+<span id="tc1-torque-limit-model"></span><h1><a class="reference internal" href="#module-TC1_torque_limit_model" title="TC1_torque_limit_model"><code class="xref py py-mod docutils literal notranslate"><span class="pre">TC1_torque_limit_model</span></code></a><a class="headerlink" href="#module-TC1_torque_limit_model" title="Permalink to this heading"></a></h1>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading"></a></h2>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#TC1_torque_limit_model.DiscreteCheck" title="TC1_torque_limit_model.DiscreteCheck"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DiscreteCheck</span></code></a></p></td>
+<td><p>The <code class="docutils literal notranslate"><span class="pre">Node</span></code> class is a base type for nodes in a Directed</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#TC1_torque_limit_model.MaxTorqueImplicitModel" title="TC1_torque_limit_model.MaxTorqueImplicitModel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MaxTorqueImplicitModel</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#TC1_torque_limit_model.MaxTorqueModel" title="TC1_torque_limit_model.MaxTorqueModel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MaxTorqueModel</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#TC1_torque_limit_model.TorqueLimitModel" title="TC1_torque_limit_model.TorqueLimitModel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TorqueLimitModel</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="attributes">
+<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#TC1_torque_limit_model.p" title="TC1_torque_limit_model.p"><code class="xref py py-obj docutils literal notranslate"><span class="pre">p</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="TC1_torque_limit_model.DiscreteCheck">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">TC1_torque_limit_model.</span></span><span class="sig-name descname"><span class="pre">DiscreteCheck</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TC1_torque_limit_model.DiscreteCheck" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">csdl.CustomExplicitOperation</span></code></p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Node</span></code> class is a base type for nodes in a Directed
+Acyclic Graph (DAG) that represents the computation to be performed
+during model evaluation.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="TC1_torque_limit_model.DiscreteCheck.compute">
+<span class="sig-name descname"><span class="pre">compute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outputs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TC1_torque_limit_model.DiscreteCheck.compute" title="Permalink to this definition"></a></dt>
+<dd><p>Define outputs as an explicit function of the inputs</p>
+<p><strong>Example</strong></p>
+<p><a href="#id1"><span class="problematic" id="id2">``</span></a><a href="#id3"><span class="problematic" id="id4">`</span></a>py
+def compute(self, inputs, outputs):</p>
+<blockquote>
+<div><p>outputs[‘L’] = 1/2 * inputs[‘Cl’] * inputs[‘rho’] * inputs[‘V’]**2 * inputs[‘S’]
+outputs[‘D’] = 1/2 * inputs[‘Cd’] * inputs[‘rho’] * inputs[‘V’]**2 * inputs[‘S’]</p>
+</div></blockquote>
+<p><a href="#id5"><span class="problematic" id="id6">``</span></a><a href="#id7"><span class="problematic" id="id8">`</span></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TC1_torque_limit_model.DiscreteCheck.define">
+<span class="sig-name descname"><span class="pre">define</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TC1_torque_limit_model.DiscreteCheck.define" title="Permalink to this definition"></a></dt>
+<dd><p>User defined method to define custom operation</p>
+<p><strong>Example</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">define</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">add_input</span><span class="p">(</span><span class="s1">&#39;Cl&#39;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">add_input</span><span class="p">(</span><span class="s1">&#39;Cd&#39;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">add_input</span><span class="p">(</span><span class="s1">&#39;rho&#39;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">add_input</span><span class="p">(</span><span class="s1">&#39;V&#39;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">add_input</span><span class="p">(</span><span class="s1">&#39;S&#39;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">add_output</span><span class="p">(</span><span class="s1">&#39;L&#39;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">add_output</span><span class="p">(</span><span class="s1">&#39;D&#39;</span><span class="p">)</span>
+
+    <span class="c1"># declare derivatives of all outputs wrt all inputs</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">declare_derivatives</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="s1">&#39;*&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TC1_torque_limit_model.DiscreteCheck.evaluate_residual">
+<span class="sig-name descname"><span class="pre">evaluate_residual</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">D</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">E</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TC1_torque_limit_model.DiscreteCheck.evaluate_residual" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TC1_torque_limit_model.DiscreteCheck.initialize">
+<span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TC1_torque_limit_model.DiscreteCheck.initialize" title="Permalink to this definition"></a></dt>
+<dd><p>User defined method to declare parameter values. Parameters are
+compile time constants (neither inputs nor outputs to the model)
+and cannot be updated at runtime. Parameters are intended to
+make a <code class="docutils literal notranslate"><span class="pre">CustomOperation</span></code> subclass definition generic, and therefore
+reusable. The example below shows how a <code class="docutils literal notranslate"><span class="pre">CustomOperation</span></code> subclass
+definition uses parameters and how the user can set parameters
+when constructing the example <code class="docutils literal notranslate"><span class="pre">CustomOperation</span></code> subclass. Note
+that the user never instantiates nor inherits directly from the
+<code class="docutils literal notranslate"><span class="pre">CustomOperation</span></code> base class.</p>
+<p><strong>Example</strong></p>
+<p><a href="#id9"><span class="problematic" id="id10">``</span></a><a href="#id11"><span class="problematic" id="id12">`</span></a>py
+# in this example, we inherit from ExplicitOperation, but
+# the user can also inherit from ImplicitOperation
+class Example(ExplicitOperation):</p>
+<blockquote>
+<div><dl>
+<dt>def initialize(self):</dt><dd><p>self.parameters.declare(‘in_name’, types=str)
+self.parameters.declare(‘out_name’, types=str)</p>
+</dd>
+<dt>def define(self):</dt><dd><p># use parameters declared in <code class="docutils literal notranslate"><span class="pre">initialize</span></code>
+in_name = self.parameters[‘in_name’]
+out_name = self.parameters[‘out_name’]</p>
+<p>self.add_input(in_name)
+self.add_output(out_name)
+self.declare_derivatives(out_name, in_name)</p>
+</dd>
+</dl>
+<p># define run time behavior by defining other methods…</p>
+</div></blockquote>
+<p># compile using Simulator imported from back end…
+sim = Simulator(</p>
+<blockquote>
+<div><dl class="simple">
+<dt>Example(</dt><dd><p>in_name=’x’,
+out_name=’y’,</p>
+</dd>
+</dl>
+<p>),</p>
+</div></blockquote>
+<section id="id13">
+<h4>)<a class="headerlink" href="#id13" title="Permalink to this heading"></a></h4>
+</section>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="TC1_torque_limit_model.MaxTorqueImplicitModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">TC1_torque_limit_model.</span></span><span class="sig-name descname"><span class="pre">MaxTorqueImplicitModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TC1_torque_limit_model.MaxTorqueImplicitModel" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">csdl.Model</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="TC1_torque_limit_model.MaxTorqueImplicitModel.define">
+<span class="sig-name descname"><span class="pre">define</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TC1_torque_limit_model.MaxTorqueImplicitModel.define" title="Permalink to this definition"></a></dt>
+<dd><p>User defined method to define runtime behavior.
+Note: the user never _calls_ this method. Only the <cite>Simulator</cite>
+class constructor calls this method.</p>
+<p><strong>Example</strong></p>
+<p><a href="#id14"><span class="problematic" id="id15">``</span></a><a href="#id16"><span class="problematic" id="id17">`</span></a>py
+class Example(Model):</p>
+<blockquote>
+<div><dl class="simple">
+<dt>def define(self):</dt><dd><p>self.create_input(‘x’)
+m = 5
+b = 3
+y = m*x + b
+self.register_output(‘y’, y)</p>
+</dd>
+</dl>
+</div></blockquote>
+<p># compile using Simulator imported from back end…
+sim = Simulator(Example())
+sim[‘x’] = -3/5
+sim.run()
+print(sim[‘y’]) # expect 0
+<a href="#id18"><span class="problematic" id="id19">``</span></a><a href="#id20"><span class="problematic" id="id21">`</span></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="TC1_torque_limit_model.MaxTorqueModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">TC1_torque_limit_model.</span></span><span class="sig-name descname"><span class="pre">MaxTorqueModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TC1_torque_limit_model.MaxTorqueModel" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">csdl.Model</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="TC1_torque_limit_model.MaxTorqueModel.define">
+<span class="sig-name descname"><span class="pre">define</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TC1_torque_limit_model.MaxTorqueModel.define" title="Permalink to this definition"></a></dt>
+<dd><p>User defined method to define runtime behavior.
+Note: the user never _calls_ this method. Only the <cite>Simulator</cite>
+class constructor calls this method.</p>
+<p><strong>Example</strong></p>
+<p><a href="#id22"><span class="problematic" id="id23">``</span></a><a href="#id24"><span class="problematic" id="id25">`</span></a>py
+class Example(Model):</p>
+<blockquote>
+<div><dl class="simple">
+<dt>def define(self):</dt><dd><p>self.create_input(‘x’)
+m = 5
+b = 3
+y = m*x + b
+self.register_output(‘y’, y)</p>
+</dd>
+</dl>
+</div></blockquote>
+<p># compile using Simulator imported from back end…
+sim = Simulator(Example())
+sim[‘x’] = -3/5
+sim.run()
+print(sim[‘y’]) # expect 0
+<a href="#id26"><span class="problematic" id="id27">``</span></a><a href="#id28"><span class="problematic" id="id29">`</span></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TC1_torque_limit_model.MaxTorqueModel.initialize">
+<span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TC1_torque_limit_model.MaxTorqueModel.initialize" title="Permalink to this definition"></a></dt>
+<dd><p>User defined method to declare parameter values.
+Parameters are compile time constants (neither inputs nor
+outputs to the model) and cannot be updated at runtime.
+Parameters are intended to make a <cite>Model</cite> subclass definition
+generic, and therefore reusable.
+The example below shows how a <cite>Model</cite> subclass definition uses
+parameters and how the user can set parameters when constructing
+the example <cite>Model</cite> subclass.</p>
+<p><strong>Example</strong></p>
+<p><a href="#id30"><span class="problematic" id="id31">``</span></a><a href="#id32"><span class="problematic" id="id33">`</span></a>py
+class Example(Model):</p>
+<blockquote>
+<div><dl>
+<dt>def initialize(self):</dt><dd><p>self.parameters.declare(‘num_times’, types=int)
+self.parameters.declare(‘step_size’, types=float)
+self.parameters.declare(‘surface’, types=dict)</p>
+</dd>
+<dt>def define(self):</dt><dd><p>num_times = self.parameters[‘num_times’]
+step_size = self.parameters[‘step_size’]
+surface = self.parameters[‘surface’]
+name = surface[‘name’] # str
+symmetry = surface[‘symmetry’] # bool
+mesh = surface[‘mesh’] # numpy array</p>
+<p># define runtime behavior…</p>
+</dd>
+<dt>surface = {</dt><dd><p>‘name’: ‘wing’,
+‘symmetry’: False,
+‘mesh’: mesh,</p>
+</dd>
+</dl>
+<p>}</p>
+<p># compile using Simulator imported from back end…
+sim = Simulator(</p>
+<blockquote>
+<div><dl class="simple">
+<dt>Example(</dt><dd><p>num_times=100,
+step_size=0.1,
+surface=surface,</p>
+</dd>
+</dl>
+<p>),</p>
+</div></blockquote>
+<p>)</p>
+</div></blockquote>
+<p><a href="#id34"><span class="problematic" id="id35">``</span></a><a href="#id36"><span class="problematic" id="id37">`</span></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="TC1_torque_limit_model.TorqueLimitModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">TC1_torque_limit_model.</span></span><span class="sig-name descname"><span class="pre">TorqueLimitModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TC1_torque_limit_model.TorqueLimitModel" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">csdl.Model</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="TC1_torque_limit_model.TorqueLimitModel.define">
+<span class="sig-name descname"><span class="pre">define</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TC1_torque_limit_model.TorqueLimitModel.define" title="Permalink to this definition"></a></dt>
+<dd><p>User defined method to define runtime behavior.
+Note: the user never _calls_ this method. Only the <cite>Simulator</cite>
+class constructor calls this method.</p>
+<p><strong>Example</strong></p>
+<p><a href="#id38"><span class="problematic" id="id39">``</span></a><a href="#id40"><span class="problematic" id="id41">`</span></a>py
+class Example(Model):</p>
+<blockquote>
+<div><dl class="simple">
+<dt>def define(self):</dt><dd><p>self.create_input(‘x’)
+m = 5
+b = 3
+y = m*x + b
+self.register_output(‘y’, y)</p>
+</dd>
+</dl>
+</div></blockquote>
+<p># compile using Simulator imported from back end…
+sim = Simulator(Example())
+sim[‘x’] = -3/5
+sim.run()
+print(sim[‘y’]) # expect 0
+<a href="#id42"><span class="problematic" id="id43">``</span></a><a href="#id44"><span class="problematic" id="id45">`</span></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TC1_torque_limit_model.TorqueLimitModel.initialize">
+<span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TC1_torque_limit_model.TorqueLimitModel.initialize" title="Permalink to this definition"></a></dt>
+<dd><p>User defined method to declare parameter values.
+Parameters are compile time constants (neither inputs nor
+outputs to the model) and cannot be updated at runtime.
+Parameters are intended to make a <cite>Model</cite> subclass definition
+generic, and therefore reusable.
+The example below shows how a <cite>Model</cite> subclass definition uses
+parameters and how the user can set parameters when constructing
+the example <cite>Model</cite> subclass.</p>
+<p><strong>Example</strong></p>
+<p><a href="#id46"><span class="problematic" id="id47">``</span></a><a href="#id48"><span class="problematic" id="id49">`</span></a>py
+class Example(Model):</p>
+<blockquote>
+<div><dl>
+<dt>def initialize(self):</dt><dd><p>self.parameters.declare(‘num_times’, types=int)
+self.parameters.declare(‘step_size’, types=float)
+self.parameters.declare(‘surface’, types=dict)</p>
+</dd>
+<dt>def define(self):</dt><dd><p>num_times = self.parameters[‘num_times’]
+step_size = self.parameters[‘step_size’]
+surface = self.parameters[‘surface’]
+name = surface[‘name’] # str
+symmetry = surface[‘symmetry’] # bool
+mesh = surface[‘mesh’] # numpy array</p>
+<p># define runtime behavior…</p>
+</dd>
+<dt>surface = {</dt><dd><p>‘name’: ‘wing’,
+‘symmetry’: False,
+‘mesh’: mesh,</p>
+</dd>
+</dl>
+<p>}</p>
+<p># compile using Simulator imported from back end…
+sim = Simulator(</p>
+<blockquote>
+<div><dl class="simple">
+<dt>Example(</dt><dd><p>num_times=100,
+step_size=0.1,
+surface=surface,</p>
+</dd>
+</dl>
+<p>),</p>
+</div></blockquote>
+<p>)</p>
+</div></blockquote>
+<p><a href="#id50"><span class="problematic" id="id51">``</span></a><a href="#id52"><span class="problematic" id="id53">`</span></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="TC1_torque_limit_model.p">
+<span class="sig-prename descclassname"><span class="pre">TC1_torque_limit_model.</span></span><span class="sig-name descname"><span class="pre">p</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">6</span></em><a class="headerlink" href="#TC1_torque_limit_model.p" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Luca.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,72 @@
+:py:mod:`mu_fitting`
+====================
+
+.. py:module:: mu_fitting
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   mu_fitting.fit_dep_B
+   mu_fitting.fit_dep_H
+   mu_fitting.fit_dep_H_old
+   mu_fitting.permeability_fitting
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   mu_fitting.file_name
+   mu_fitting.file_name
+
+
+.. py:function:: fit_dep_B(x, a, b, c)
+
+
+.. py:function:: fit_dep_H(x, a, b, c, d)
+
+
+.. py:function:: fit_dep_H_old(x, coeff, order)
+
+
+.. py:function:: permeability_fitting(file_name=None, test=False, order=10)
+
+
+.. py:data:: file_name
+   :value: 'Magnetic alloy, silicon core iron C.tab'
+
+   
+   --- FITTING FUNCTION FORMS --- 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:data:: file_name
+   :value: 'Magnetic alloy, silicon core iron C.tab'
+
+   
+

@@ -1,0 +1,366 @@
+:py:mod:`TC1_flux_weakening_model`
+==================================
+
+.. py:module:: TC1_flux_weakening_model
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   TC1_flux_weakening_model.FluxWeakeningBracketModel
+   TC1_flux_weakening_model.FluxWeakeningImplicitModel
+   TC1_flux_weakening_model.FluxWeakeningModel
+
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   TC1_flux_weakening_model.m
+
+
+.. py:class:: FluxWeakeningBracketModel(**kwargs)
+
+   Bases: :py:obj:`csdl.Model`
+
+   .. py:method:: define()
+
+      
+      User defined method to define runtime behavior.
+      Note: the user never _calls_ this method. Only the `Simulator`
+      class constructor calls this method.
+
+      **Example**
+
+      ```py
+      class Example(Model):
+          def define(self):
+              self.create_input('x')
+              m = 5
+              b = 3
+              y = m*x + b
+              self.register_output('y', y)
+
+      # compile using Simulator imported from back end...
+      sim = Simulator(Example())
+      sim['x'] = -3/5
+      sim.run()
+      print(sim['y']) # expect 0
+      ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: initialize()
+
+      
+      User defined method to declare parameter values.
+      Parameters are compile time constants (neither inputs nor
+      outputs to the model) and cannot be updated at runtime.
+      Parameters are intended to make a `Model` subclass definition
+      generic, and therefore reusable.
+      The example below shows how a `Model` subclass definition uses
+      parameters and how the user can set parameters when constructing
+      the example `Model` subclass.
+
+      **Example**
+
+      ```py
+      class Example(Model):
+          def initialize(self):
+              self.parameters.declare('num_times', types=int)
+              self.parameters.declare('step_size', types=float)
+              self.parameters.declare('surface', types=dict)
+
+          def define(self):
+              num_times = self.parameters['num_times']
+              step_size = self.parameters['step_size']
+              surface = self.parameters['surface']
+              name = surface['name'] # str
+              symmetry = surface['symmetry'] # bool
+              mesh = surface['mesh'] # numpy array
+
+              # define runtime behavior...
+
+          surface = {
+              'name': 'wing',
+              'symmetry': False,
+              'mesh': mesh,
+          }
+
+          # compile using Simulator imported from back end...
+          sim = Simulator(
+              Example(
+                  num_times=100,
+                  step_size=0.1,
+                  surface=surface,
+              ),
+          )
+      ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+.. py:class:: FluxWeakeningImplicitModel(**kwargs)
+
+   Bases: :py:obj:`csdl.Model`
+
+   .. py:method:: define()
+
+      
+      User defined method to define runtime behavior.
+      Note: the user never _calls_ this method. Only the `Simulator`
+      class constructor calls this method.
+
+      **Example**
+
+      ```py
+      class Example(Model):
+          def define(self):
+              self.create_input('x')
+              m = 5
+              b = 3
+              y = m*x + b
+              self.register_output('y', y)
+
+      # compile using Simulator imported from back end...
+      sim = Simulator(Example())
+      sim['x'] = -3/5
+      sim.run()
+      print(sim['y']) # expect 0
+      ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: initialize()
+
+      
+      User defined method to declare parameter values.
+      Parameters are compile time constants (neither inputs nor
+      outputs to the model) and cannot be updated at runtime.
+      Parameters are intended to make a `Model` subclass definition
+      generic, and therefore reusable.
+      The example below shows how a `Model` subclass definition uses
+      parameters and how the user can set parameters when constructing
+      the example `Model` subclass.
+
+      **Example**
+
+      ```py
+      class Example(Model):
+          def initialize(self):
+              self.parameters.declare('num_times', types=int)
+              self.parameters.declare('step_size', types=float)
+              self.parameters.declare('surface', types=dict)
+
+          def define(self):
+              num_times = self.parameters['num_times']
+              step_size = self.parameters['step_size']
+              surface = self.parameters['surface']
+              name = surface['name'] # str
+              symmetry = surface['symmetry'] # bool
+              mesh = surface['mesh'] # numpy array
+
+              # define runtime behavior...
+
+          surface = {
+              'name': 'wing',
+              'symmetry': False,
+              'mesh': mesh,
+          }
+
+          # compile using Simulator imported from back end...
+          sim = Simulator(
+              Example(
+                  num_times=100,
+                  step_size=0.1,
+                  surface=surface,
+              ),
+          )
+      ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+.. py:class:: FluxWeakeningModel(**kwargs)
+
+   Bases: :py:obj:`csdl.Model`
+
+   .. py:method:: define()
+
+      
+      User defined method to define runtime behavior.
+      Note: the user never _calls_ this method. Only the `Simulator`
+      class constructor calls this method.
+
+      **Example**
+
+      ```py
+      class Example(Model):
+          def define(self):
+              self.create_input('x')
+              m = 5
+              b = 3
+              y = m*x + b
+              self.register_output('y', y)
+
+      # compile using Simulator imported from back end...
+      sim = Simulator(Example())
+      sim['x'] = -3/5
+      sim.run()
+      print(sim['y']) # expect 0
+      ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: initialize()
+
+      
+      User defined method to declare parameter values.
+      Parameters are compile time constants (neither inputs nor
+      outputs to the model) and cannot be updated at runtime.
+      Parameters are intended to make a `Model` subclass definition
+      generic, and therefore reusable.
+      The example below shows how a `Model` subclass definition uses
+      parameters and how the user can set parameters when constructing
+      the example `Model` subclass.
+
+      **Example**
+
+      ```py
+      class Example(Model):
+          def initialize(self):
+              self.parameters.declare('num_times', types=int)
+              self.parameters.declare('step_size', types=float)
+              self.parameters.declare('surface', types=dict)
+
+          def define(self):
+              num_times = self.parameters['num_times']
+              step_size = self.parameters['step_size']
+              surface = self.parameters['surface']
+              name = surface['name'] # str
+              symmetry = surface['symmetry'] # bool
+              mesh = surface['mesh'] # numpy array
+
+              # define runtime behavior...
+
+          surface = {
+              'name': 'wing',
+              'symmetry': False,
+              'mesh': mesh,
+          }
+
+          # compile using Simulator imported from back end...
+          sim = Simulator(
+              Example(
+                  num_times=100,
+                  step_size=0.1,
+                  surface=surface,
+              ),
+          )
+      ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+.. py:data:: m
+
+   
+

@@ -4,6 +4,7 @@
 
 This repository provides users with a PMSM Motor Model representation comprised of two submodels for the sizing as well as analysis of motors in the context of Large-Scale MDO.
 
+
 # Cite us
 ```none
 @article{lsdo2023,

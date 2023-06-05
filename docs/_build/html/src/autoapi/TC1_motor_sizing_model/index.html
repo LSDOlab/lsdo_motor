@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TC1_motor_sizing_model &mdash; lsdo_motor  documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+        <script src="../../../_static/clipboard.min.js"></script>
+        <script src="../../../_static/copybutton.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980B9" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            lsdo_motor
+          </a>
+              <div class="version">
+                0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../background.html">Background</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/basic.html">1. Basic examples</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/advanced.html">2. Advanced examples</a><ul class="simple">
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API reference</a><ul class="simple">
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980B9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">lsdo_motor</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><code class="xref py py-mod docutils literal notranslate"><span class="pre">TC1_motor_sizing_model</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/src/autoapi/TC1_motor_sizing_model/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-TC1_motor_sizing_model">
+<span id="tc1-motor-sizing-model"></span><h1><a class="reference internal" href="#module-TC1_motor_sizing_model" title="TC1_motor_sizing_model"><code class="xref py py-mod docutils literal notranslate"><span class="pre">TC1_motor_sizing_model</span></code></a><a class="headerlink" href="#module-TC1_motor_sizing_model" title="Permalink to this heading"></a></h1>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading"></a></h2>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#TC1_motor_sizing_model.TC1MotorSizingModel" title="TC1_motor_sizing_model.TC1MotorSizingModel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TC1MotorSizingModel</span></code></a></p></td>
+<td><p>INPUTS TO THIS MODEL:</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#TC1_motor_sizing_model.TorqueMassModel" title="TC1_motor_sizing_model.TorqueMassModel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TorqueMassModel</span></code></a></p></td>
+<td><p>INPUTS TO THIS MODEL:</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="attributes">
+<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#TC1_motor_sizing_model.m" title="TC1_motor_sizing_model.m"><code class="xref py py-obj docutils literal notranslate"><span class="pre">m</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="TC1_motor_sizing_model.TC1MotorSizingModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">TC1_motor_sizing_model.</span></span><span class="sig-name descname"><span class="pre">TC1MotorSizingModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TC1_motor_sizing_model.TC1MotorSizingModel" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">csdl.Model</span></code></p>
+<dl class="simple">
+<dt>INPUTS TO THIS MODEL:</dt><dd><ul class="simple">
+<li><p>length and diameter of motor (as DVs or inputs)</p></li>
+</ul>
+</dd>
+<dt>OUTPUTS OF THIS MODEL:</dt><dd><ul class="simple">
+<li><p>motor geometry</p></li>
+<li><p>motor resistance</p></li>
+<li><p>motor max torque (structural)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="TC1_motor_sizing_model.TC1MotorSizingModel.define">
+<span class="sig-name descname"><span class="pre">define</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TC1_motor_sizing_model.TC1MotorSizingModel.define" title="Permalink to this definition"></a></dt>
+<dd><p>User defined method to define runtime behavior.
+Note: the user never _calls_ this method. Only the <cite>Simulator</cite>
+class constructor calls this method.</p>
+<p><strong>Example</strong></p>
+<p><a href="#id1"><span class="problematic" id="id2">``</span></a><a href="#id3"><span class="problematic" id="id4">`</span></a>py
+class Example(Model):</p>
+<blockquote>
+<div><dl class="simple">
+<dt>def define(self):</dt><dd><p>self.create_input(‘x’)
+m = 5
+b = 3
+y = m*x + b
+self.register_output(‘y’, y)</p>
+</dd>
+</dl>
+</div></blockquote>
+<p># compile using Simulator imported from back end…
+sim = Simulator(Example())
+sim[‘x’] = -3/5
+sim.run()
+print(sim[‘y’]) # expect 0
+<a href="#id5"><span class="problematic" id="id6">``</span></a><a href="#id7"><span class="problematic" id="id8">`</span></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TC1_motor_sizing_model.TC1MotorSizingModel.initialize">
+<span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TC1_motor_sizing_model.TC1MotorSizingModel.initialize" title="Permalink to this definition"></a></dt>
+<dd><p>User defined method to declare parameter values.
+Parameters are compile time constants (neither inputs nor
+outputs to the model) and cannot be updated at runtime.
+Parameters are intended to make a <cite>Model</cite> subclass definition
+generic, and therefore reusable.
+The example below shows how a <cite>Model</cite> subclass definition uses
+parameters and how the user can set parameters when constructing
+the example <cite>Model</cite> subclass.</p>
+<p><strong>Example</strong></p>
+<p><a href="#id9"><span class="problematic" id="id10">``</span></a><a href="#id11"><span class="problematic" id="id12">`</span></a>py
+class Example(Model):</p>
+<blockquote>
+<div><dl>
+<dt>def initialize(self):</dt><dd><p>self.parameters.declare(‘num_times’, types=int)
+self.parameters.declare(‘step_size’, types=float)
+self.parameters.declare(‘surface’, types=dict)</p>
+</dd>
+<dt>def define(self):</dt><dd><p>num_times = self.parameters[‘num_times’]
+step_size = self.parameters[‘step_size’]
+surface = self.parameters[‘surface’]
+name = surface[‘name’] # str
+symmetry = surface[‘symmetry’] # bool
+mesh = surface[‘mesh’] # numpy array</p>
+<p># define runtime behavior…</p>
+</dd>
+<dt>surface = {</dt><dd><p>‘name’: ‘wing’,
+‘symmetry’: False,
+‘mesh’: mesh,</p>
+</dd>
+</dl>
+<p>}</p>
+<p># compile using Simulator imported from back end…
+sim = Simulator(</p>
+<blockquote>
+<div><dl class="simple">
+<dt>Example(</dt><dd><p>num_times=100,
+step_size=0.1,
+surface=surface,</p>
+</dd>
+</dl>
+<p>),</p>
+</div></blockquote>
+<p>)</p>
+</div></blockquote>
+<p><a href="#id13"><span class="problematic" id="id14">``</span></a><a href="#id15"><span class="problematic" id="id16">`</span></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="TC1_motor_sizing_model.TorqueMassModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">TC1_motor_sizing_model.</span></span><span class="sig-name descname"><span class="pre">TorqueMassModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TC1_motor_sizing_model.TorqueMassModel" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">csdl.Model</span></code></p>
+<dl class="simple">
+<dt>INPUTS TO THIS MODEL:</dt><dd><ul class="simple">
+<li><p>constant max torque (before base speed)</p></li>
+<li><p>R, Ld, Lq, p,</p></li>
+<li><p>omega for each operating condition</p></li>
+</ul>
+</dd>
+<dt>OUTPUTS OF THIS MODEL:</dt><dd><ul class="simple">
+<li><p>base speed</p></li>
+<li><p>max torque at each value of omega</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="TC1_motor_sizing_model.TorqueMassModel.define">
+<span class="sig-name descname"><span class="pre">define</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TC1_motor_sizing_model.TorqueMassModel.define" title="Permalink to this definition"></a></dt>
+<dd><p>User defined method to define runtime behavior.
+Note: the user never _calls_ this method. Only the <cite>Simulator</cite>
+class constructor calls this method.</p>
+<p><strong>Example</strong></p>
+<p><a href="#id17"><span class="problematic" id="id18">``</span></a><a href="#id19"><span class="problematic" id="id20">`</span></a>py
+class Example(Model):</p>
+<blockquote>
+<div><dl class="simple">
+<dt>def define(self):</dt><dd><p>self.create_input(‘x’)
+m = 5
+b = 3
+y = m*x + b
+self.register_output(‘y’, y)</p>
+</dd>
+</dl>
+</div></blockquote>
+<p># compile using Simulator imported from back end…
+sim = Simulator(Example())
+sim[‘x’] = -3/5
+sim.run()
+print(sim[‘y’]) # expect 0
+<a href="#id21"><span class="problematic" id="id22">``</span></a><a href="#id23"><span class="problematic" id="id24">`</span></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TC1_motor_sizing_model.TorqueMassModel.fit_torque_to_mass">
+<span class="sig-name descname"><span class="pre">fit_torque_to_mass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">motor_mass</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TC1_motor_sizing_model.TorqueMassModel.fit_torque_to_mass" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TC1_motor_sizing_model.TorqueMassModel.initialize">
+<span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TC1_motor_sizing_model.TorqueMassModel.initialize" title="Permalink to this definition"></a></dt>
+<dd><p>User defined method to declare parameter values.
+Parameters are compile time constants (neither inputs nor
+outputs to the model) and cannot be updated at runtime.
+Parameters are intended to make a <cite>Model</cite> subclass definition
+generic, and therefore reusable.
+The example below shows how a <cite>Model</cite> subclass definition uses
+parameters and how the user can set parameters when constructing
+the example <cite>Model</cite> subclass.</p>
+<p><strong>Example</strong></p>
+<p><a href="#id25"><span class="problematic" id="id26">``</span></a><a href="#id27"><span class="problematic" id="id28">`</span></a>py
+class Example(Model):</p>
+<blockquote>
+<div><dl>
+<dt>def initialize(self):</dt><dd><p>self.parameters.declare(‘num_times’, types=int)
+self.parameters.declare(‘step_size’, types=float)
+self.parameters.declare(‘surface’, types=dict)</p>
+</dd>
+<dt>def define(self):</dt><dd><p>num_times = self.parameters[‘num_times’]
+step_size = self.parameters[‘step_size’]
+surface = self.parameters[‘surface’]
+name = surface[‘name’] # str
+symmetry = surface[‘symmetry’] # bool
+mesh = surface[‘mesh’] # numpy array</p>
+<p># define runtime behavior…</p>
+</dd>
+<dt>surface = {</dt><dd><p>‘name’: ‘wing’,
+‘symmetry’: False,
+‘mesh’: mesh,</p>
+</dd>
+</dl>
+<p>}</p>
+<p># compile using Simulator imported from back end…
+sim = Simulator(</p>
+<blockquote>
+<div><dl class="simple">
+<dt>Example(</dt><dd><p>num_times=100,
+step_size=0.1,
+surface=surface,</p>
+</dd>
+</dl>
+<p>),</p>
+</div></blockquote>
+<p>)</p>
+</div></blockquote>
+<p><a href="#id29"><span class="problematic" id="id30">``</span></a><a href="#id31"><span class="problematic" id="id32">`</span></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="TC1_motor_sizing_model.m">
+<span class="sig-prename descclassname"><span class="pre">TC1_motor_sizing_model.</span></span><span class="sig-name descname"><span class="pre">m</span></span><a class="headerlink" href="#TC1_motor_sizing_model.m" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Luca.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
