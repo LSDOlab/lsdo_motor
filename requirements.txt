@@ -10,11 +10,11 @@ gitpython
 # git+https://github.com/anugrahjo/sphinx-collections.git
 sphinxcontrib-bibtex
 auto_mix_prep==0.2.0
-csdl.egg==info
+git+https://github.com/LSDOlab/csdl.git
 matplotlib==3.7.1
-modopt.egg==info
+git+https://github.com/LSDOlab/modopt.git
 numpy==1.24.3
-python_csdl_backend.egg==info
+git+https://github.com/LSDOlab/python_csdl_backend.git
 scipy==1.8.0
 seaborn==0.12.2
 setuptools==67.8.0
