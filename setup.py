@@ -8,9 +8,6 @@ def read(rel_path):
         return fp.read()
 
 
-
-
-
 def get_version(rel_path):
     for line in read(rel_path).splitlines():
         if line.startswith('__version__'):

@@ -28,4 +28,5 @@ src/getting_started
 src/background
 src/examples
 src/api
+src/tutorials
 ```

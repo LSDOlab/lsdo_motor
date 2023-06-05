@@ -9,7 +9,4 @@ Tutorials will be completed with more tangible examples pertaining to **PMSM** m
 :titlesonly:
 :numbered: 1
 :includehidden:
-
-tutorials/basic
-tutorials/advanced
 ```
