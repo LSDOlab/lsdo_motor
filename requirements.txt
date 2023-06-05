@@ -7,7 +7,7 @@ sphinx-copybutton
 sphinx-autoapi
 numpydoc
 gitpython
-git+https://github.com/anugrahjo/sphinx-collections.git
+# git+https://github.com/anugrahjo/sphinx-collections.git
 sphinxcontrib-bibtex
 auto_mix_prep==0.2.0
 csdl.egg==info
