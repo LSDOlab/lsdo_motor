@@ -1,10 +1,10 @@
+import pytest
 import numpy as np
 import csdl
 from python_csdl_backend import Simulator
-
 from lsdo_motor.motor_submodels.TC1_magnet_mec_model import MagnetMECModel
 from lsdo_motor.permeability.mu_fitting import permeability_fitting
-
+##test_magnet
 # SETUP PERMEABILITY FITTING
 file_name = 'Magnetic_alloy_silicon_core_iron_C.tab'
 order=10
