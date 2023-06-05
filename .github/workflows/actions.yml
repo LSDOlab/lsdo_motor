@@ -40,9 +40,7 @@ jobs:
       # Finally, we run the package unit-tests on the specified OS and python versions.
       # Replace pytest with the lines
       # Replace pytest with this line once lsdo_test is setup
-      # pip install git+https://github.com/LSDOlab/lsdo_test.git
-      # lsdo /*
     - name: Test with pytest/lsdo_test
       run: |
-        pytest
-        
+        pip install git+https://github.com/LSDOlab/lsdo_test.git
+        lsdo /*
