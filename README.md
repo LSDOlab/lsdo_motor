@@ -8,9 +8,9 @@
 [![PyPI Monthly Downloads][12]][11]
 -->
 
-[![GitHub Actions Test Badge](https://github.com/suspensemax/LSDO_Motor/actions/workflows/actions.yml/badge.svg)](https://github.com/LSDO_Motor/LSDO_Motor/actions)
-[![Forks](https://img.shields.io/github/forks/suspensemax/LSDO_Motor.svg)](https://github.com/suspensemax/LSDO_Motor/network)
-[![Issues](https://img.shields.io/github/issues/suspensemax/LSDO_Motor.svg)](https://github.com/suspensemax/LSDO_Motor/issues)
+[![GitHub Actions Test Badge](https://github.com/suspensemax/lsdo_motor/actions/workflows/actions.yml/badge.svg)](https://github.com/lsdo_motor/lsdo_motor/actions)
+[![Forks](https://img.shields.io/github/forks/suspensemax/lsdo_motor.svg)](https://github.com/suspensemax/lsdo_motor/network)
+[![Issues](https://img.shields.io/github/issues/suspensemax/lsdo_motor.svg)](https://github.com/suspensemax/lsdo_motor/issues)
 
 This package provides solvers for low-fidelity PMSMs(Permanent Magnet Synchronous Motors) in the context of NASA's Technical Challenge 1, under the NASA Undergraduate Leadership initiative. These solvers performs optimization using [CSDL](!https://lsdolab.github.io/csdl/). 
 
@@ -28,16 +28,16 @@ pip install git+https://github.com/suspensemax/lsdo_project_template.git
 Once PyPy is set up. 
 For right now: 
 ```sh
-git clone https://github.com/suspensemax/LSDO_Motor.git
+git clone https://github.com/suspensemax/lsdo_motor.git
 ```
 
 If you want users to install a specific branch, run
 ```sh
-pip install git+https://github.com/suspensemax/LSDO_Motor.git@branch
+pip install git+https://github.com/suspensemax/lsdo_motor.git@branch
 ```
 As of right now, to install a certain branch: 
 ```sh
-git clone https://github.com/suspensemax/LSDO_Motor.git
+git clone https://github.com/suspensemax/lsdo_motor.git
 git checkout {branch}
 ```
 to utilize a certain branch
@@ -45,11 +45,11 @@ to utilize a certain branch
 **Enabled by**: `packages=find_packages()` in the `setup.py` file.
 
 ## Installation instructions for developers
-To install `LSDO_Motor`,clone the repository using *git*.
+To install `lsdo_motor`,clone the repository using *git*.
 On the terminal or command line, run
 ```sh
-git clone https://github.com/suspensemax/LSDO_Motor.git
-# pip install -e ./LSDO_Motor
+git clone https://github.com/suspensemax/lsdo_motor.git
+# pip install -e ./lsdo_motor
 ```
 
 # For Developers
