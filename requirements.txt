@@ -1,3 +1,14 @@
+
+pytest
+sphinx==5.3.0
+myst-nb
+sphinx_rtd_theme==1.1.1   # Defining exact versions to ensure things don't break
+sphinx-copybutton
+sphinx-autoapi
+numpydoc
+gitpython
+git+https://github.com/anugrahjo/sphinx-collections.git
+sphinxcontrib-bibtex
 auto_mix_prep==0.2.0
 csdl.egg==info
 matplotlib==3.7.1
