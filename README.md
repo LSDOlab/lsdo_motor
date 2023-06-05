@@ -1,4 +1,4 @@
-# lsdo_project_template
+# lsdo_motor
 
 <!---
 [![Python](https://img.shields.io/pypi/pyversions/lsdo_project_template)](https://img.shields.io/pypi/pyversions/lsdo_project_template)
@@ -8,7 +8,7 @@
 [![PyPI Monthly Downloads][12]][11]
 -->
 
-[![GitHub Actions Test Badge](https://github.com/suspensemax/lsdo_motor/actions/workflows/actions.yml/badge.svg)](https://github.com/lsdo_motor/lsdo_motor/actions)
+[![GitHub Actions Test Badge](https://github.com/suspensemax/lsdo_motor/actions/workflows/actions.yml/badge.svg)](https://github.com/suspensemax/lsdo_motor/actions)
 [![Forks](https://img.shields.io/github/forks/suspensemax/lsdo_motor.svg)](https://github.com/suspensemax/lsdo_motor/network)
 [![Issues](https://img.shields.io/github/issues/suspensemax/lsdo_motor.svg)](https://github.com/suspensemax/lsdo_motor/issues)
 
