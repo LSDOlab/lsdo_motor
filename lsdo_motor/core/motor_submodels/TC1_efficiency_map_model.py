@@ -29,9 +29,9 @@ class LoadTorqueImplicitModel(Model):
 
         T_em = self.declare_variable('T_em', shape=(num_nodes,)) 
         omega = self.declare_variable('omega', shape=(num_nodes,))
-        implicit_motor_variables = self.declare_variable('motor_variables', shape=(25,)) # array of motor sizing outputs
-        for i in range(implicit_motor_variables.shape[0]):
-            self.register_output(self.motor_variable_names[i], implicit_motor_variables[i])
+        implicit_motor_parameters = self.declare_variable('motor_parameters', shape=(27,)) # array of motor sizing outputs
+        for i in range(implicit_motor_parameters.shape[0]):
+            self.register_output(self.motor_variable_names[i], implicit_motor_parameters[i])
         R_expanded = self.declare_variable('R_expanded', shape=(num_nodes,))
         L_d_expanded = self.declare_variable('L_d_expanded', shape=(num_nodes,))
         L_q_expanded = self.declare_variable('L_q_expanded', shape=(num_nodes,))
@@ -124,9 +124,9 @@ class LoadTorqueImplicitModel(Model):
 
         D_i = self.declare_variable('D_i')
         B_delta = self.declare_variable('B_delta')
-        l_ef = implicit_motor_variables[4]
-        D1 = implicit_motor_variables[0]
-        Acu = implicit_motor_variables[7]
+        l_ef = implicit_motor_parameters[4]
+        D1 = implicit_motor_parameters[0]
+        Acu = implicit_motor_parameters[7]
         B_delta_expanded = csdl.expand(B_delta, (num_nodes,))
         
         K_e = (a*np.pi)**2 * sigma_c/60
@@ -147,7 +147,7 @@ class LoadTorqueImplicitModel(Model):
         fr = 3e-3 # friction coefficient
         rho_air = 1.225 # air density kg/m^3
         # D2 = self.declare_variable('rotor_radius')
-        D2 = implicit_motor_variables[5] # rotor radius
+        D2 = implicit_motor_parameters[5] # rotor radius
         l_ef_expanded = csdl.expand(l_ef, (num_nodes,))
         D2_expanded = csdl.expand(D2, (num_nodes,))
         P_wo = k_r*np.pi*fr*rho_air*(2*np.pi*frequency)**2*l_ef_expanded*D2_expanded**4
@@ -207,7 +207,7 @@ class EfficiencyMapModel(Model):
 
         T_em = self.declare_variable('T_em', shape=(num_nodes,))
         omega = self.declare_variable('omega', shape=(num_nodes,))
-        motor_variables = self.declare_variable('motor_variables', shape=(25,))
+        motor_parameters = self.declare_variable('motor_parameters', shape=(27,))
         R_expanded=self.declare_variable('R_expanded', shape=(num_nodes,))
         L_d_expanded = self.declare_variable('L_d_expanded', shape=(num_nodes,))
         L_q_expanded = self.declare_variable('L_q_expanded', shape=(num_nodes,))
@@ -219,19 +219,19 @@ class EfficiencyMapModel(Model):
         
 
         # T_em, current_amplitude, output_power, input_power_active, efficiency_active = implicit_torque_operation(
-        #     load_torque, omega, motor_variables, R_expanded, L_d_expanded, L_q_expanded, 
+        #     load_torque, omega, motor_parameters, R_expanded, L_d_expanded, L_q_expanded, 
         #     PsiF_expanded, I_q_rated, B_delta, D_i,
         #     expose=['current_amplitude', 'output_power', 'input_power_active', 'efficiency_active']
         # )
 
         # T_em, efficiency_active, input_power_active, current_amplitude, output_power, Iq_fw_dummy, Iq_MTPA_dummy = implicit_torque_operation(
-        #     load_torque, omega, motor_variables, R_expanded, L_d_expanded, L_q_expanded, 
+        #     load_torque, omega, motor_parameters, R_expanded, L_d_expanded, L_q_expanded, 
         #     PsiF_expanded, I_q_rated, B_delta, D_i,
         #     expose=['efficiency_active', 'input_power_active', 'current_amplitude', 'output_power', 'Iq_fw_dummy', 'Iq_MTPA_dummy']
         # )
 
         load_torque, I_d_upper_bracket_list_dummy, Id_upper_lim_dummy, a1_dummy, a2_dummy, a3_dummy, a4_dummy, a5_dummy, Iq_fw_dummy, Iq_MTPA_dummy, Id_fw_dummy, current_amplitude, output_power, input_power_active,efficiency_active = implicit_torque_operation(
-            T_em, omega, motor_variables, R_expanded, L_d_expanded, L_q_expanded, 
+            T_em, omega, motor_parameters, R_expanded, L_d_expanded, L_q_expanded, 
             PsiF_expanded, Id_fw_bracket, I_q_rated, B_delta, D_i, 
             expose=['I_d_upper_bracket_list_dummy', 'Id_upper_lim_dummy', 'a1_dummy','a2_dummy','a3_dummy','a4_dummy','a5_dummy','Iq_fw_dummy', 'Iq_MTPA_dummy', 'Id_fw_dummy', 'current_amplitude', 'output_power', 'input_power_active', 'efficiency_active']
         )

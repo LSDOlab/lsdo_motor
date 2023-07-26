@@ -3,14 +3,15 @@ from csdl import Model, ScipyKrylov, NewtonSolver
 from python_csdl_backend import Simulator
 import csdl
 
-from TC1_motor_model.motor_submodels.TC1_magnet_mec_model import MagnetMECModel
-from TC1_motor_model.motor_submodels.TC1_inductance_mec_model import InductanceModel
-from TC1_motor_model.motor_submodels.TC1_torque_limit_model import TorqueLimitModel
-from TC1_motor_model.motor_submodels.TC1_implicit_em_torque_model import EMTorqueModel
-from TC1_motor_model.motor_submodels.TC1_flux_weakening_model import FluxWeakeningModel, FluxWeakeningBracketModel
-from TC1_motor_model.motor_submodels.TC1_mtpa_model import MTPAModel
-from TC1_motor_model.motor_submodels.TC1_post_processing_model import PostProcessingModel
+from lsdo_motor.core.motor_submodels.TC1_magnet_mec_model import MagnetMECModel
+from lsdo_motor.core.motor_submodels.TC1_inductance_mec_model import InductanceModel
+from lsdo_motor.core.motor_submodels.TC1_torque_limit_model import TorqueLimitModel
+from lsdo_motor.core.motor_submodels.TC1_implicit_em_torque_model import EMTorqueModel
+from lsdo_motor.core.motor_submodels.TC1_flux_weakening_model import FluxWeakeningModel, FluxWeakeningBracketModel
+from lsdo_motor.core.motor_submodels.TC1_mtpa_model import MTPAModel
+from lsdo_motor.core.motor_submodels.TC1_post_processing_model import PostProcessingModel
 
+from lsdo_modules.module_csdl.module_csdl import ModuleCSDL
 
 '''
 THIS MODEL CONTAINS THE ENTIRE MOTOR ANALYSIS MODEL.
@@ -75,7 +76,7 @@ class ParseActiveOperatingConditions(csdl.CustomExplicitOperation):
         derivatives['load_torque_rotor_active', 'load_torque_rotor'] = np.transpose(self.selection_indices)
 
 
-class TC1MotorAnalysisModel(Model):
+class TC1MotorAnalysisModel(ModuleCSDL):
     def initialize(self, model_test=False):
         self.parameters.declare('pole_pairs') # 6
         self.parameters.declare('phases') # 3
@@ -85,14 +86,17 @@ class TC1MotorAnalysisModel(Model):
         self.parameters.declare('fit_coeff_dep_H') # FITTING COEFFICIENTS (X = H, B = f(H))
         self.parameters.declare('fit_coeff_dep_B') # FITTING COEFFICIENTS (X = B, H = g(B))
         self.parameters.declare('num_nodes')
-        self.parameters.declare('num_active_nodes')
-        self.parameters.declare('model_test', default=False)
+        self.parameters.declare('num_active_nodes', default=None)
+        self.parameters.declare('flux_weakening', default=False)
+        self.parameters.declare('use_caddee', default=True)
+
 
         self.motor_variable_names = [
             'outer_stator_radius', 'pole_pitch', 'tooth_pitch', 'air_gap_depth', 'l_ef',
             'rotor_radius', 'turns_per_phase', 'Acu',  'tooth_width', 'height_yoke_stator',
             'slot_bottom_width', 'slot_height', 'slot_width_inner', 'Tau_y', 'L_j1', 'Kdp1',
             'bm', 'Am_r', 'phi_r', 'lambda_m', 'alpha_i', 'Kf', 'K_phi', 'K_theta', 'A_f2',
+            'Rdc', 'T_em_max' # LAST TWO ARE SPECIAL VARIABLES
         ]
 
     def define(self):
@@ -106,15 +110,24 @@ class TC1MotorAnalysisModel(Model):
         fit_coeff_dep_B = self.parameters['fit_coeff_dep_B']
         num_nodes = self.parameters['num_nodes']
         num_active_nodes = self.parameters['num_active_nodes']
-        model_test=self.parameters['model_test']
+        flux_weakening=self.parameters['flux_weakening']
+        use_caddee = self.parameters['use_caddee']
 
         # DECLARE VARIABLES FROM SIZING & UPSTREAM MODELS
         D_i = self.declare_variable('D_i') # Diameter (DV or input)
-        T_em_max = self.declare_variable('T_em_max') # Max torque (structural)
-        Rdc = self.declare_variable('Rdc') # Resistance
-        motor_variables = self.declare_variable('motor_variables', shape=(25,)) # array of motor sizing outputs
-        for i in range(motor_variables.shape[0]):
-            self.register_output(self.motor_variable_names[i], motor_variables[i])
+        # T_em_max = self.declare_variable('T_em_max') # Max torque (structural)
+        # Rdc = self.declare_variable('Rdc') # Resistance
+        motor_parameters = self.declare_variable('motor_parameters', shape=(27,)) # array of motor sizing outputs
+        for i in range(motor_parameters.shape[0]-2):
+            self.register_output(self.motor_variable_names[i], motor_parameters[i])
+
+        if use_caddee:
+            Rdc = self.register_output('Rdc', motor_parameters[-2])
+            T_em_max = self.register_output('T_em_max', motor_parameters[-1])
+        else:
+            Rdc = motor_parameters[-2] # NOTE: CHECK IF THIS IS CAUSING ISSUES BC IT'S NOT DECLARED AS A VARIABLE
+            T_em_max = motor_parameters[-1] # NOTE: CHECK IF THIS IS CAUSING ISSUES BC IT'S NOT DECLARED AS A VARIABLE
+
 
         # ========================= MAGNET MEC =========================
         self.add(
@@ -147,13 +160,20 @@ class TC1MotorAnalysisModel(Model):
         omega_rotor = self.declare_variable('omega_rotor', shape=(num_nodes,))
         load_torque_rotor = self.declare_variable('load_torque_rotor', shape=(num_nodes,))
 
-        omega_rotor_active, load_torque_rotor_active, selection_indices = csdl.custom(
-            omega_rotor, load_torque_rotor,
-            op=ParseActiveOperatingConditions(num_nodes=num_nodes, num_active_nodes=num_active_nodes)
-        )
+        if num_active_nodes is None:
+            num_active_nodes_orig = num_active_nodes
+            num_active_nodes = num_nodes
+        else:
+            omega_rotor_active, load_torque_rotor_active, selection_indices = csdl.custom(
+                omega_rotor, load_torque_rotor,
+                op=ParseActiveOperatingConditions(num_nodes=num_nodes, num_active_nodes=num_active_nodes)
+            )
 
-        omega_rotor_active = self.register_output('omega_rotor_active', omega_rotor_active)
-        load_torque_rotor_active = self.register_output('load_torque_rotor_active', load_torque_rotor_active)
+            # omega_rotor_active = self.register_output('omega_rotor_active', omega_rotor_active)
+            # load_torque_rotor_active = self.register_output('load_torque_rotor_active', load_torque_rotor_active)
+
+            omega_rotor = self.register_output('omega_rotor_active', omega_rotor_active)
+            load_torque_rotor = self.register_output('load_torque_rotor_active', load_torque_rotor_active)
 
         R_expanded = self.register_output('R_expanded', csdl.expand(Rdc, (num_active_nodes,)))
         L_d_expanded = self.register_output('L_d_expanded', csdl.expand(L_d, (num_active_nodes,)))
@@ -162,8 +182,8 @@ class TC1MotorAnalysisModel(Model):
 
         # ========================= GEARBOX =========================
         gear_ratio = 4.
-        omega = self.register_output('omega', omega_rotor_active * gear_ratio * 2*np.pi/60)
-        load_torque = self.register_output('load_torque', load_torque_rotor_active/gear_ratio)
+        omega = self.register_output('omega', omega_rotor * gear_ratio * 2*np.pi/60)
+        load_torque = self.register_output('load_torque', load_torque_rotor/gear_ratio)
 
         # ========================= FINDING UPPER TORQUE LIMIT (DISCRIMINANT = 0 CASE) =========================
         self.add(
@@ -198,160 +218,55 @@ class TC1MotorAnalysisModel(Model):
             4*T_lim**2*(R_expanded**2 + (omega*L_d_expanded)**2)
         )
 
-        self.add(
-            FluxWeakeningBracketModel(
-                pole_pairs=p,
-                num_nodes=num_active_nodes
-            ),
-            'flux_weakening_bracket_method'
-        )
-
-        Iq_fw_bracket = self.declare_variable('Iq_fw_bracket', shape=(num_active_nodes, ))
-        Id_fw_bracket = self.declare_variable('Id_fw_bracket', shape=(num_active_nodes, ))
-
-        if model_test == False:
+        if flux_weakening:
+            # NOTE: REMOVE
             self.add(
-                EMTorqueModel(
+                FluxWeakeningBracketModel(
                     pole_pairs=p,
-                    V_lim=V_lim,
-                    num_nodes=num_active_nodes,
-                    rated_current=rated_current,
-                    phases=m,
-                    motor_variable_names=self.motor_variable_names
+                    num_nodes=num_active_nodes
                 ),
-                'implicit_em_torque_model'
+                'flux_weakening_bracket_method'
             )
 
+            Iq_fw_bracket = self.declare_variable('Iq_fw_bracket', shape=(num_active_nodes, ))
+            Id_fw_bracket = self.declare_variable('Id_fw_bracket', shape=(num_active_nodes, ))
+
+        self.add(
+            EMTorqueModel(
+                pole_pairs=p,
+                V_lim=V_lim,
+                num_nodes=num_active_nodes,
+                rated_current=rated_current,
+                phases=m,
+                motor_variable_names=self.motor_variable_names,
+                flux_weakening=flux_weakening
+            ),
+            'implicit_em_torque_model'
+        )
+        if num_active_nodes_orig is None:
+            input_power = self.declare_variable('input_power_active', shape=(num_active_nodes,))
+            self.register_output('input_power', input_power * 1.)
+        else:
             input_power_active = self.declare_variable('input_power_active', shape=(num_active_nodes,))
             input_power = csdl.matvec(selection_indices, input_power_active)
             self.register_output('input_power', input_power)
 
-            '''
-            NOTE TO SELF:
-            Make this active calculation available for all relevant outputs:
-                - efficiency, input power, output power, load torque, EM torque (potentially others)
-            '''
-            
-            # CALCULATING UPPER LIMIT TORQUE CURVE  
-            T_upper_lim_curve = self.register_output(
-                'T_upper_lim_curve',
-                # -csdl.log(csdl.exp(-T_lim) + csdl.exp(-csdl.expand(T_em_max, (num_active_nodes,))))
-                csdl.min(csdl.reshape(T_lim, new_shape=(num_active_nodes, )),
-                            csdl.expand(T_em_max, (num_active_nodes, )))
-            )
-
-            max_torque_constraint = self.register_output(name='max_torque_constraint',
-                                                            var=T_upper_lim_curve-load_torque)
-
-
-        else:
-    # ========================= IMPLICIT T_EM MODEL =========================
-            T_em = self.declare_variable('T_em', shape=(num_nodes,)) # STATE of implicit model
-
-            # FLUX WEAKENING MODEL
-            self.add(
-                FluxWeakeningModel(
-                    pole_pairs=p,
-                    V_lim=V_lim,
-                    num_nodes=num_nodes
-                ),
-                'flux_weakening_model',
-            )
-            
-            # MTPA MODEL
-            self.add(
-                MTPAModel(
-                    pole_pairs=p,
-                    num_nodes=num_nodes
-                ),
-                'mtpa_model',
-            )
-            
-            # SMOOTHING
-
-            # psi_d = L_d_expanded*I_d*np.sqrt(2) + PsiF_expanded # NOT USED
-            # psi_q = L_q_expanded*I_d*np.sqrt(2) # NOT USED
-
-            I_q_rated = self.declare_variable('I_q_temp')
-            I_q_rated_expanded = csdl.expand(I_q_rated, shape=(num_nodes,))
-
-            f_i = 5000*p/60 # rated omega from sizing model = 3000
-            U_d = -R_expanded*rated_current*np.sin(0.6283) - 2*np.pi*f_i*L_q_expanded*I_q_rated_expanded
-            U_q = R_expanded*rated_current*np.sin(0.6283) + 2*np.pi*f_i*(PsiF_expanded - L_d_expanded*I_q_rated_expanded)
-
-            U_rated = self.register_output(
-                'voltage_amplitude',
-                (U_d**2 + U_q**2)**(1/2)
-            )
-
-            Iq_fw = self.declare_variable('Iq_fw', shape=(num_nodes,))
-            Iq_MTPA = self.declare_variable('Iq_MTPA', shape=(num_nodes,)) # CHECK NAMING SCHEME FOR VARIABLE
-            k = 1 # ASK SHUOFENG WHAT THIS IS
-
-            I_q = (csdl.exp(k*(U_rated - V_lim))*Iq_fw + Iq_MTPA) / (csdl.exp(k*(U_rated - V_lim)) + 1.0)
-            I_d = (T_em / (1.5*p*I_q) - PsiF_expanded) / (L_d_expanded-L_q_expanded) # CHECK SIZE OF COMPUTATIONS HERE
-            
-            current_amplitude = self.register_output(
-                'current_amplitude',
-                (I_q**2 + I_d**2)**0.5
-            )
-
-            
-            ''' POWER LOSS CALCULATIONS '''
-            # load power
-            # eq of the form P0 = speed * torque
-            P0 = load_torque * omega
-            self.register_output('output_power', P0)
-            frequency = omega*p/60
-
-            # copper loss
-            R_expanded = csdl.expand(Rdc, (num_nodes,))
-            P_copper = m*R_expanded*current_amplitude**2 # NEED TO CHECK IF THIS IS ELEMENT-WISE SQUARING
-            
-            # eddy_loss
-            a = 0.00055 # lamination thickness in m
-            sigma_c = 2e6 # bulk conductivity (2000000 S/m)
-            l_ef = self.declare_variable('l_ef')
-            D1 = self.declare_variable('outer_stator_radius')
-            D_i = self.declare_variable('D_i')
-            Acu = self.declare_variable('Acu')
-            B_delta = self.declare_variable('B_delta')
-            B_delta_expanded = csdl.expand(B_delta, (num_nodes,))
-            
-            K_e = (a*np.pi)**2 * sigma_c/6
-            V_s = csdl.expand((np.pi*l_ef*(D1-D_i)**2)-36*l_ef*Acu, (num_nodes,)); # volume of stator
-            K_c = 0.822;
-            P_eddy = K_e*V_s*(B_delta_expanded*frequency)**2; # eddy loss
-
-            # hysteresis loss
-            K_h = 100
-            n_h = 2
-            P_h = K_h*V_s*frequency*B_delta_expanded**n_h
-
-            # stress loss
-            P_stress = 0.01*P0
-
-            # windage & friction loss
-            k_r = 4 # roughness coefficient
-            fr = 3e-3 # friction coefficient
-            rho_air = 1.225 # air density kg/m^3
-            D2 = self.declare_variable('rotor_radius')
-            l_ef_expanded = csdl.expand(l_ef, (num_nodes,))
-            D2_expanded = csdl.expand(D2, (num_nodes,))
-            P_wo = k_r*np.pi*fr*rho_air*(2*np.pi*frequency)**2*l_ef_expanded*D2_expanded**4
-
-            # total losses
-            P_loss = P_copper + P_eddy + P_h + P_stress + P_wo
-            input_power = self.register_output('input_power', P0 + P_loss)
-            efficiency = self.register_output('efficiency', P0/input_power)
-                
-                # residual = model.register_output(
-                #     'residual',
-                #     load_torque - efficiency*T_em
-                # )
-                # bracket between 0 and smoothing of torque 
-
-                # FROM HERE, THE OUTPUT POWER AND EFFICIENCY ARE PROPOGATED TO THE
-                # BATTERY ANALYSIS MODELS
-
+        '''
+        NOTE TO SELF:
+        Make this active calculation available for all relevant outputs:
+            - efficiency, input power, output power, load torque, EM torque (potentially others)
+        '''
         
+        # CALCULATING UPPER LIMIT TORQUE CURVE  
+        T_upper_lim_curve = self.register_output(
+            'T_upper_lim_curve',
+            # -csdl.log(csdl.exp(-T_lim) + csdl.exp(-csdl.expand(T_em_max, (num_active_nodes,))))
+            csdl.min(csdl.reshape(T_lim, new_shape=(num_active_nodes, )),
+                        csdl.expand(T_em_max, (num_active_nodes, )))
+        )
+
+        max_torque_constraint = self.register_output(name='max_torque_constraint',
+                                                        var=T_upper_lim_curve-load_torque)
+        
+
+

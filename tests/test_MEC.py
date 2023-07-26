@@ -2,8 +2,8 @@ import pytest
 import numpy as np
 import csdl
 from python_csdl_backend import Simulator
-from lsdo_motor.motor_submodels.TC1_magnet_mec_model import MagnetMECModel
-from lsdo_motor.permeability.mu_fitting import permeability_fitting
+from lsdo_motor.core.motor_submodels.TC1_magnet_mec_model import MagnetMECModel
+from lsdo_motor.core.permeability.mu_fitting import permeability_fitting
 ##test magnet
 def test1():
     # SETUP PERMEABILITY FITTING

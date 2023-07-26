@@ -5,7 +5,9 @@ from python_csdl_backend import Simulator
 from csdl import Model, GraphRepresentation
 import csdl
 
-class TorqueMassModel(Model):
+from lsdo_modules.module_csdl.module_csdl import ModuleCSDL
+
+class TorqueMassModel(ModuleCSDL):
     '''
     INPUTS TO THIS MODEL:
         - constant max torque (before base speed)
@@ -225,43 +227,48 @@ class TC1MotorSizingModel(Model):
             np.pi*l_ef*rho_fe*((outer_stator_radius/2)**2 - (D_shaft/2)**2)*1e3
         )
 
-        # POPULATE motor_variables WITH THE RELEVANT MOTOR VARIABLES
-        # THE ONLY ONES THAT WILL BE IGNORED ARE motor_mass AND resistance (Rdc)
-        motor_variables = self.create_output(
-            'motor_variables',
-            shape=(25,)
-        )
-        
-        motor_variables[0]  = outer_stator_radius
-        motor_variables[1]  = pole_pitch
-        motor_variables[2]  = tooth_pitch
-        motor_variables[3]  = air_gap_depth
-        motor_variables[4]  = l_ef
-        motor_variables[5]  = rotor_radius
-        motor_variables[6]  = turns_per_phase
-        motor_variables[7]  = Acu
-        motor_variables[8]  = tooth_width
-        motor_variables[9]  = h_ys
-        motor_variables[10] = b_sb
-        motor_variables[11] = h_slot
-        motor_variables[12] = b_s1
-        motor_variables[13] = Tau_y
-        motor_variables[14] = L_j1
-        motor_variables[15] = Kdp1
-        motor_variables[16] = bm
-        motor_variables[17] = Am_r
-        motor_variables[18] = phi_r
-        motor_variables[19] = lambda_m
-        motor_variables[20] = alpha_i
-        motor_variables[21] = Kf
-        motor_variables[22] = K_phi
-        motor_variables[23] = K_theta
-        motor_variables[24] = A_f2
-
         self.add(
             TorqueMassModel(fitting_order=1),
             'max_torque_model'
         ) # GIVES US T_em_max AS A FUNCTION OF MASS
+        max_torque = self.declare_variable('T_em_max')
+
+        # POPULATE motor_parameters WITH THE RELEVANT MOTOR VARIABLES
+        # THE ONLY ONES THAT WILL BE IGNORED ARE motor_mass AND resistance (Rdc)
+        motor_parameters = self.create_output(
+            'motor_parameters',
+            shape=(27,)
+        )
+        
+        motor_parameters[0]  = outer_stator_radius
+        motor_parameters[1]  = pole_pitch
+        motor_parameters[2]  = tooth_pitch
+        motor_parameters[3]  = air_gap_depth
+        motor_parameters[4]  = l_ef
+        motor_parameters[5]  = rotor_radius
+        motor_parameters[6]  = turns_per_phase
+        motor_parameters[7]  = Acu
+        motor_parameters[8]  = tooth_width
+        motor_parameters[9]  = h_ys
+        motor_parameters[10] = b_sb
+        motor_parameters[11] = h_slot
+        motor_parameters[12] = b_s1
+        motor_parameters[13] = Tau_y
+        motor_parameters[14] = L_j1
+        motor_parameters[15] = Kdp1
+        motor_parameters[16] = bm
+        motor_parameters[17] = Am_r
+        motor_parameters[18] = phi_r
+        motor_parameters[19] = lambda_m
+        motor_parameters[20] = alpha_i
+        motor_parameters[21] = Kf
+        motor_parameters[22] = K_phi
+        motor_parameters[23] = K_theta
+        motor_parameters[24] = A_f2
+        motor_parameters[25] = Rdc
+        motor_parameters[26] = max_torque
+
+        
 
 if __name__ == '__main__':
     m = TC1MotorSizingModel(
@@ -284,7 +291,7 @@ if __name__ == '__main__':
 
     sim.run()
     print(sim['Rdc'])
-    print(sim['motor_variables'])
+    print(sim['motor_parameters'])
     print([
             'outer_stator_radius', 'pole_pitch', 'tooth_pitch', 'air_gap_depth', 'l_ef',
             'rotor_radius', 'turns_per_phase', 'Acu',  'tooth_width', 'height_yoke_stator',
