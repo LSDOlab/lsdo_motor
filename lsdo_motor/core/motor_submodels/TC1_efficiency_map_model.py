@@ -122,7 +122,7 @@ class LoadTorqueImplicitModel(Model):
         a = 0.00055 # lamination thickness in m
         sigma_c = 2e6 # bulk conductivity (2000000 S/m)
 
-        D_i = self.declare_variable('D_i')
+        D_i = self.declare_variable('motor_diameter')
         B_delta = self.declare_variable('B_delta')
         l_ef = implicit_motor_parameters[4]
         D1 = implicit_motor_parameters[0]
@@ -215,7 +215,7 @@ class EfficiencyMapModel(Model):
         Id_fw_bracket = self.declare_variable('Id_fw_bracket', shape=(num_nodes,))
         I_q_rated = self.declare_variable('I_q_temp')
         B_delta = self.declare_variable('B_delta')
-        D_i = self.declare_variable('D_i')
+        D_i = self.declare_variable('motor_diameter')
         
 
         # T_em, current_amplitude, output_power, input_power_active, efficiency_active = implicit_torque_operation(

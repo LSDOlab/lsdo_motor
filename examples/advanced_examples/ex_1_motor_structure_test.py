@@ -71,8 +71,8 @@ m = FullMotorModel(
 )
 
 sim = Simulator(m)
-sim['D_i'] = D_i
-sim['L'] = L
+sim['motor_diameter'] = D_i
+sim['motor_length'] = L
 
 sim['omega_rotor'] = omega_rotor
 sim['load_torque_rotor'] = load_torque_rotor

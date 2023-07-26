@@ -7,7 +7,7 @@ import csdl
 
 from lsdo_modules.module_csdl.module_csdl import ModuleCSDL
 
-class TorqueMassModel(ModuleCSDL):
+class TorqueMassModel(Model):
     '''
     INPUTS TO THIS MODEL:
         - constant max torque (before base speed)
@@ -48,7 +48,7 @@ class TorqueMassModel(ModuleCSDL):
             self.fit_torque_to_mass(motor_mass)
         )
 
-class TC1MotorSizingModel(Model):
+class TC1MotorSizingModel(ModuleCSDL):
     '''
     INPUTS TO THIS MODEL:
         - length and diameter of motor (as DVs or inputs)
@@ -77,8 +77,8 @@ class TC1MotorSizingModel(Model):
         mu_0 = np.pi*4e-7
 
         # --- RATED PARAMETERS AS INPUTS FROM OPTIMIZER ---
-        D_i = self.declare_variable('D_i') # inner radius of stator
-        L = self.declare_variable('L') # effective length of motor
+        D_i = self.register_module_input('motor_diameter', shape=(1,), computed_upstream=False) # inner radius of stator
+        L = self.register_module_input('motor_length', shape=(1,), computed_upstream=False) # effective length of motor
         rated_omega = 5000
         eta_0 = 0.96 # ASSUMED INITIAL EFFICIENCY; MATLAB CODE STARTS WITH 0.88
         PF = 1 # POWER FACTOR
@@ -286,8 +286,8 @@ if __name__ == '__main__':
 
     rep = GraphRepresentation(m)
     sim = Simulator(rep)
-    sim['D_i'] = D_i
-    sim['L'] = L
+    sim['motor_diameter'] = D_i
+    sim['motor_length'] = L
 
     sim.run()
     print(sim['Rdc'])

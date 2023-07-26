@@ -136,7 +136,7 @@ class EMTorqueImplicitModel(Model):
         a = 0.00055 # lamination thickness in m
         sigma_c = 2e6 # bulk conductivity (2000000 S/m)
 
-        D_i = self.declare_variable('D_i')
+        D_i = self.declare_variable('motor_diameter')
         B_delta = self.declare_variable('B_delta')
         l_ef = implicit_motor_parameters[4]
         D1 = implicit_motor_parameters[0]
@@ -254,7 +254,7 @@ class EMTorqueModel(Model):
         Id_fw_bracket = self.declare_variable('Id_fw_bracket', shape=(num_nodes,))
         I_q_rated = self.declare_variable('I_q_temp')
         B_delta = self.declare_variable('B_delta')
-        D_i = self.declare_variable('D_i')
+        D_i = self.declare_variable('motor_diameter')
 
         # T_em, I_d_upper_bracket_list_dummy, Id_upper_lim_dummy, a1_dummy, a2_dummy, a3_dummy, a4_dummy, a5_dummy, Iq_fw_dummy, Iq_MTPA_dummy, Id_fw_dummy, current_amplitude, output_power, input_power_active,efficiency_active = implicit_torque_operation(
         #     load_torque, omega, motor_parameters, R_expanded, L_d_expanded, L_q_expanded, 

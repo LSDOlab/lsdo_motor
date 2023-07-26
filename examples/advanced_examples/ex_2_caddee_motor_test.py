@@ -105,15 +105,7 @@ system_rep.add_output(f'{prefix}_blade_twist', rotor_v_dist_tot)
 caddee.system_model = system_model = cd.SystemModel()
 design_scenario = cd.DesignScenario(name='motor_hover_test')
 
-# MOTOR MASS SOLVER, NOT SURE WHERE THIS NEEDS TO GO
 
-motor_sizing = MotorSizing(
-    component_name='motor'
-)
-motor_sizing.set_module_input('motor_diameter', 0.182, dv_flag=True, lower=0.12, upper=0.3, scaler=10.)
-motor_sizing.set_module_input('motor_length', 0.086, dv_flag=True, lower=0.06, upper=0.1, scaler=100.)
-
-motor_mass, motor_parameters = motor_sizing.evaluate() # this would then feed into some mass properties solver
 
 # ==================== HOVER ====================
 hover_model = m3l.Model()
@@ -125,6 +117,18 @@ hover_condition.set_module_input(name='observer_location', val=np.array([0, 0, 5
 hover_condition.set_module_input(name='hover_time', val=120.)
 ac_states = hover_condition.evaluate_ac_states()
 hover_model.register_output(ac_states)
+
+# MOTOR MASS SOLVER, NOT SURE WHERE THIS NEEDS TO GO
+
+motor_sizing = MotorSizing(
+    component_name='dummy_motor'
+)
+motor_sizing.set_module_input('motor_diameter', 0.182, dv_flag=True, lower=0.12, upper=0.3, scaler=10.)
+motor_sizing.set_module_input('motor_length', 0.086, dv_flag=True, lower=0.06, upper=0.1, scaler=100.)
+
+motor_mass, motor_parameters = motor_sizing.evaluate() 
+hover_model.register_output(motor_mass) # this would then feed into some mass properties solver
+hover_model.register_output(motor_parameters)
 
 # region BEM
 rotor_bem_mesh = BEMMesh(
@@ -153,11 +157,11 @@ hover_model.register_output(Q)
 # endregion
 
 motor_model = MotorAnalysis(
-    component_name='motor',
+    component_name='dummy_motor',
     V_lim=400
 )
 
-P_in, eff = motor_model.evaluate(
+P_in = motor_model.evaluate(
     torque=Q,
     motor_parameters=motor_parameters,
     design_condition=hover_condition
@@ -169,3 +173,16 @@ design_scenario.add_design_condition(hover_condition)
 
 system_model.add_design_scenario(design_scenario=design_scenario)
 caddee_csdl_model = caddee.assemble_csdl()
+
+caddee_csdl_model.connect(
+    'system_model.motor_hover_test.hover.hover.dummy_motor_sizing_model.motor_diameter',
+    'system_model.motor_hover_test.hover.hover.hover_dummy_motor_analysis_model.implicit_em_torque_model.motor_diameter'
+)
+
+caddee_csdl_model.connect(
+    'system_model.motor_hover_test.hover.hover.rotor_disk_bem_model.rpm',
+    'system_model.motor_hover_test.hover.hover.hover_dummy_motor_analysis_model.omega_rotor'
+)
+
+sim = Simulator(caddee_csdl_model, analytics=True)
+sim.run()

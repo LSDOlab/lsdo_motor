@@ -6,7 +6,7 @@ def_coeff_H = np.array([1.92052530e-03,  1.03633835e+01, -2.98809161e+00])
 def_coeff_B = np.array([1.12832651, 1., 1., 1.])
 
 class MotorAnalysis(m3l.ExplicitOperation):
-    def initialize(self):
+    def initialize(self, kwargs):
         self.parameters.declare('component_name')
         self.parameters.declare('pole_pairs', default=6)
         self.parameters.declare('phases', default=3)
@@ -31,9 +31,7 @@ class MotorAnalysis(m3l.ExplicitOperation):
         return model
     
     def evaluate(self, 
-                 motor_diameter: m3l.Variable=None,
                  torque: m3l.Variable=None,
-                 RPM: m3l.Variable=None,
                  motor_parameters: m3l.Variable=None,
                  design_condition=None) -> m3l.Variable:
         self.pole_pairs = self.parameters['pole_pairs']
@@ -49,13 +47,11 @@ class MotorAnalysis(m3l.ExplicitOperation):
 
         if design_condition:
             dc_name = design_condition.parameters['name']
-            self.name = f'{dc_name}_{component_name}_motor_analysis_model'
+            self.name = f'{dc_name}_{component_name}_analysis_model'
         else:
-            self.name = f'{component_name}_motor_analysis_model'
+            self.name = f'{component_name}_analysis_model'
 
         self.arguments={}
-        self.arguments['D_i'] = motor_diameter
-        self.arguments['omega_rotor'] = RPM
         self.arguments['load_torque_rotor'] = torque
         self.arguments['motor_parameters'] = motor_parameters
 
@@ -64,10 +60,11 @@ class MotorAnalysis(m3l.ExplicitOperation):
             shape=(self.num_nodes,),
             operation=self
         )
-        efficiency = m3l.Variable(
-            name='efficiency',
-            shape=(self.num_nodes,),
-            operation=self
-        )
+        # efficiency = m3l.Variable(
+        #     name='efficiency',
+        #     shape=(self.num_nodes,),
+        #     operation=self
+        # )
 
-        return output_power, efficiency
+        return output_power
+    # efficiency

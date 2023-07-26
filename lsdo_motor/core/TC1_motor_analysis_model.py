@@ -114,7 +114,7 @@ class TC1MotorAnalysisModel(ModuleCSDL):
         use_caddee = self.parameters['use_caddee']
 
         # DECLARE VARIABLES FROM SIZING & UPSTREAM MODELS
-        D_i = self.declare_variable('D_i') # Diameter (DV or input)
+        D_i = self.declare_variable('motor_diameter') # Diameter (DV or input)
         # T_em_max = self.declare_variable('T_em_max') # Max torque (structural)
         # Rdc = self.declare_variable('Rdc') # Resistance
         motor_parameters = self.declare_variable('motor_parameters', shape=(27,)) # array of motor sizing outputs
