@@ -65,6 +65,7 @@ class TC1MotorSizingModel(ModuleCSDL):
         self.parameters.declare('phases') # 3
         self.parameters.declare('num_slots') # 36
         self.parameters.declare('rated_current')
+        self.parameters.declare('component_name')
 
     def define(self):
         # --- DEFINING INPUTS FROM INITIALIZE & BASIC PARAMETERS --- 
@@ -221,7 +222,7 @@ class TC1MotorSizingModel(ModuleCSDL):
         mass_deficit_slot = A_slot*l_ef*rho_fe*Z*1e3
         mass_deficit_mag = 2*p*bm*hm*l_ef*rho_fe*1e3
 
-        self.register_output(
+        motor_mass = self.register_module_output(
             'motor_mass', 
             (mass_cu-mass_deficit_slot) + (mass_magnet-mass_deficit_mag) + \
             np.pi*l_ef*rho_fe*((outer_stator_radius/2)**2 - (D_shaft/2)**2)*1e3
@@ -235,9 +236,10 @@ class TC1MotorSizingModel(ModuleCSDL):
 
         # POPULATE motor_parameters WITH THE RELEVANT MOTOR VARIABLES
         # THE ONLY ONES THAT WILL BE IGNORED ARE motor_mass AND resistance (Rdc)
-        motor_parameters = self.create_output(
+        motor_parameters = self.register_module_output(
             'motor_parameters',
-            shape=(27,)
+            shape=(27,),
+            val=0.
         )
         
         motor_parameters[0]  = outer_stator_radius
@@ -268,7 +270,44 @@ class TC1MotorSizingModel(ModuleCSDL):
         motor_parameters[25] = Rdc
         motor_parameters[26] = max_torque
 
-        
+        # MOTOR CG AND INERTIA COMPUTATION
+        component_name = self.parameters['component_name']
+        units = 'ft' # CHANGE LATER TO MAKE MORE GENERAL
+        if units == 'ft':
+            origin = self.register_module_input(f'{component_name}_origin', shape=(3,), promotes=True) * 0.3048
+        else:
+            origin = self.register_module_input(f'{component_name}_origin', shape=(3,), promotes=True)
+
+        x, y, z = origin[0], origin[1], origin[2]
+
+        motor_cg = self.register_module_output(f'{component_name}_motor_cg', origin * 1.)
+
+        ixx = motor_mass * (y**2 + z**2)
+        ixy = -motor_mass * x*y
+        ixz = -motor_mass * x*z 
+        iyx = ixy*1.
+        iyy = motor_mass * (x**2 + z**2) 
+        iyz = -motor_mass * y*z 
+        izx = ixz * 1.
+        izy = iyz * 1.
+        izz = motor_mass * (x**2 + y**2)
+
+        inertia_tensor = self.register_module_output(f'{component_name}_motor_inertia', shape=(3,3), val=0.)
+        inertia_tensor[0, 0] = csdl.reshape(ixx, (1, 1))
+        inertia_tensor[0, 1] = csdl.reshape(ixy, (1, 1))
+        inertia_tensor[0, 2] = csdl.reshape(ixz, (1, 1))
+        inertia_tensor[1, 0] = csdl.reshape(iyx, (1, 1))
+        inertia_tensor[1, 1] = csdl.reshape(iyy, (1, 1))
+        inertia_tensor[1, 2] = csdl.reshape(iyz, (1, 1))
+        inertia_tensor[2, 0] = csdl.reshape(izx, (1, 1))
+        inertia_tensor[2, 1] = csdl.reshape(izy, (1, 1))
+        inertia_tensor[2, 2] = csdl.reshape(izz, (1, 1))
+
+        self.register_module_output('mass', motor_mass * 1.)
+        self.register_module_output('cg_vector', motor_cg * 1.)
+        self.register_module_output('inertia_tensor', inertia_tensor * 1.)
+
+
 
 if __name__ == '__main__':
     m = TC1MotorSizingModel(

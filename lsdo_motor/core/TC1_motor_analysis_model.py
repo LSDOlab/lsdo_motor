@@ -40,19 +40,19 @@ class ParseActiveOperatingConditions(csdl.CustomExplicitOperation):
         self.num_nodes = self.parameters['num_nodes']
         self.num_active_nodes = self.parameters['num_active_nodes']
 
-        self.add_input('omega_rotor', shape=(self.num_nodes,))
+        self.add_input('rpm', shape=(self.num_nodes,))
         self.add_input('load_torque_rotor', shape=(self.num_nodes,))
 
         self.add_output('omega_rotor_active', shape=(self.num_active_nodes,))
         self.add_output('load_torque_rotor_active', shape=(self.num_active_nodes,))
         self.add_output('selection_indices', shape=(self.num_nodes,self.num_active_nodes))
 
-        self.declare_derivatives('omega_rotor_active', 'omega_rotor')
+        self.declare_derivatives('omega_rotor_active', 'rpm')
         self.declare_derivatives('load_torque_rotor_active', 'load_torque_rotor')
 
     def compute(self, inputs, outputs):
 
-        omega_rotor = inputs['omega_rotor']
+        omega_rotor = inputs['rpm']
         load_torque_rotor = inputs['load_torque_rotor']
 
         omega_rotor_active = []
@@ -72,7 +72,7 @@ class ParseActiveOperatingConditions(csdl.CustomExplicitOperation):
         outputs['selection_indices'] = self.selection_indices
         
     def compute_derivatives(self, inputs, derivatives):
-        derivatives['omega_rotor_active', 'omega_rotor'] = np.transpose(self.selection_indices)
+        derivatives['omega_rotor_active', 'rpm'] = np.transpose(self.selection_indices)
         derivatives['load_torque_rotor_active', 'load_torque_rotor'] = np.transpose(self.selection_indices)
 
 
@@ -117,7 +117,7 @@ class TC1MotorAnalysisModel(ModuleCSDL):
         D_i = self.declare_variable('motor_diameter') # Diameter (DV or input)
         # T_em_max = self.declare_variable('T_em_max') # Max torque (structural)
         # Rdc = self.declare_variable('Rdc') # Resistance
-        motor_parameters = self.declare_variable('motor_parameters', shape=(27,)) # array of motor sizing outputs
+        motor_parameters = self.register_module_input('motor_parameters', shape=(27,)) # array of motor sizing outputs
         for i in range(motor_parameters.shape[0]-2):
             self.register_output(self.motor_variable_names[i], motor_parameters[i])
 
@@ -154,11 +154,11 @@ class TC1MotorAnalysisModel(ModuleCSDL):
         L_q = self.declare_variable('L_q')
         phi_air = self.declare_variable('phi_air')
         W_1 = self.declare_variable('turns_per_phase')
-        PsiF = self.register_output('PsiF', W_1 * phi_air)
+        PsiF = self.register_output('PsiF', W_1 * phi_air * D_i / D_i) # added D_i so that connection is easier
 
         # ========================= TORQUE AND RPM INPUT ADJUSTMENT =========================
-        omega_rotor = self.declare_variable('omega_rotor', shape=(num_nodes,))
-        load_torque_rotor = self.declare_variable('load_torque_rotor', shape=(num_nodes,))
+        omega_rotor = self.declare_variable('rpm', shape=(num_nodes,))
+        load_torque_rotor = self.register_module_input('load_torque_rotor', shape=(num_nodes,))
 
         if num_active_nodes is None:
             num_active_nodes_orig = num_active_nodes
@@ -198,28 +198,27 @@ class TC1MotorAnalysisModel(ModuleCSDL):
         T_lower_lim = self.declare_variable('T_lower_lim', val=0., shape=(num_active_nodes,))
         
         D = (3*p*(L_d_expanded-L_q_expanded))
-
-        # ========================= FLUX WEAKENING BRACKETING IMPLICIT MODEL (TO FIND BRACKET LIMIT) =========================
-        a_bracket = self.register_output(
-            'a_bracket',
-            D**2 * ((omega*L_q_expanded)**2 + R_expanded**2)
-        )
-        c_bracket = self.register_output(
-            'c_bracket',
-            (3*p*PsiF_expanded)**2 * (R_expanded**2 + (omega*L_q_expanded)**2) + \
-            12*p*omega*R_expanded*T_lim*(L_d_expanded-L_q_expanded)**2 - (V_lim*D)**2
-        )
-        d_bracket = self.register_output(
-            'd_bracket',
-            -12*p*PsiF_expanded*T_lim*(R_expanded**2 + omega**2*L_d_expanded*L_q_expanded)
-        )
-        e_bracket = self.register_output(
-            'e_bracket',
-            4*T_lim**2*(R_expanded**2 + (omega*L_d_expanded)**2)
-        )
-
         if flux_weakening:
-            # NOTE: REMOVE
+
+            # ========================= FLUX WEAKENING BRACKETING IMPLICIT MODEL (TO FIND BRACKET LIMIT) =========================
+            a_bracket = self.register_output(
+                'a_bracket',
+                D**2 * ((omega*L_q_expanded)**2 + R_expanded**2)
+            )
+            c_bracket = self.register_output(
+                'c_bracket',
+                (3*p*PsiF_expanded)**2 * (R_expanded**2 + (omega*L_q_expanded)**2) + \
+                12*p*omega*R_expanded*T_lim*(L_d_expanded-L_q_expanded)**2 - (V_lim*D)**2
+            )
+            d_bracket = self.register_output(
+                'd_bracket',
+                -12*p*PsiF_expanded*T_lim*(R_expanded**2 + omega**2*L_d_expanded*L_q_expanded)
+            )
+            e_bracket = self.register_output(
+                'e_bracket',
+                4*T_lim**2*(R_expanded**2 + (omega*L_d_expanded)**2)
+            )
+            
             self.add(
                 FluxWeakeningBracketModel(
                     pole_pairs=p,
@@ -245,7 +244,8 @@ class TC1MotorAnalysisModel(ModuleCSDL):
         )
         if num_active_nodes_orig is None:
             input_power = self.declare_variable('input_power_active', shape=(num_active_nodes,))
-            self.register_output('input_power', input_power * 1.)
+            # self.register_output('input_power', input_power * 1.)
+            self.register_module_output('input_power', input_power * 1., promotes=False)
         else:
             input_power_active = self.declare_variable('input_power_active', shape=(num_active_nodes,))
             input_power = csdl.matvec(selection_indices, input_power_active)

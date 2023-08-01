@@ -64,6 +64,7 @@ class EMTorqueImplicitModel(Model):
                 ),
                 'flux_weakening_model',
             )
+            print('FLUX WEAKENING IS ACTIVE')
 
             I_d_upper_bracket_list = self.declare_variable('I_d_upper_bracket_list', shape=(num_nodes,2))
             Id_upper_lim = self.declare_variable('Id_upper_lim', shape=(num_nodes,))
@@ -107,7 +108,7 @@ class EMTorqueImplicitModel(Model):
         U_MTPA = (U_d_MTPA**2 + U_q_MTPA**2)**0.5
 
         if flux_weakening:
-            k = .5 # ASK SHUOFENG WHAT THIS IS
+            k = .5 
             I_q = (csdl.exp(k*(U_MTPA - V_lim))*Iq_fw + Iq_MTPA) / (csdl.exp(k*(U_MTPA - V_lim)) + 1.0)
         else:
             I_q = Iq_MTPA * 1.
@@ -121,8 +122,8 @@ class EMTorqueImplicitModel(Model):
         ''' POWER LOSS CALCULATIONS '''
         # load power
         # eq of the form P0 = speed * torque
-        P0 = load_torque * omega * 2*np.pi/60
-        # P0 = load_torque*omega
+        # P0 = load_torque * omega * 2*np.pi/60
+        P0 = load_torque*omega
         # P0 = T_em * omega * 2*np.pi/60/p
         # P0 = T_em * omega/p
         self.register_output('output_power', P0)
@@ -151,7 +152,7 @@ class EMTorqueImplicitModel(Model):
         V_s = csdl.expand((np.pi*l_ef*(D1-D_i)**2)/4-36*l_ef*Acu, (num_nodes,)); # volume of stator
         V_s1 = csdl.expand((np.pi*l_ef*(D2-D_shaft)**2)/4, (num_nodes,))
         V_t = csdl.expand(2*p*l_ef*bm*hm, (num_nodes,))
-        K_c = 0.822;
+        K_c = 0.822
         P_eddy = K_e*(V_s+V_s1)*(B_delta_expanded*frequency)**2; # eddy loss
         P_eddy_s = K_e*(V_t)*(B_delta_expanded*frequency)**2; # eddy loss
 
@@ -197,7 +198,7 @@ class EMTorqueModel(Model):
         self.parameters.declare('phases')
         self.parameters.declare('motor_variable_names')
         self.parameters.declare('mode', default='input_load', values=['input_load', 'efficiency_map'])
-        self.parameters.declare('flux_weakening', default=True)
+        self.parameters.declare('flux_weakening', default=False)
 
     def define(self):
         p = self.parameters['pole_pairs']

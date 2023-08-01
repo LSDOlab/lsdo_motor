@@ -35,7 +35,8 @@ class FullMotorModel(csdl.Model):
                 pole_pairs=pole_pairs,
                 phases=phases,
                 num_slots=num_slots,
-                rated_current=I_rated
+                rated_current=I_rated,
+                component_name='dummy'
             ),
             'sizing_model'
         )
@@ -57,24 +58,27 @@ class FullMotorModel(csdl.Model):
         )
 
 
-D_i = 0.182
-L = 0.086
+# D_i = 0.182
+# L = 0.086
 
-load_torque_rotor = np.array([172.317]) # CL, CR, 0, H, H
-omega_rotor = np.array([3375.10]) # CL, CR, 0, H, H
+D_i = 0.182
+L = 0.06
+
+load_torque_rotor = np.array([172.317])
+omega_rotor = np.array([3375.10])
 
 num_nodes=len(load_torque_rotor)
 
 m = FullMotorModel(
     num_nodes=num_nodes,
-    V_lim=800
+    V_lim=400
 )
 
 sim = Simulator(m)
 sim['motor_diameter'] = D_i
 sim['motor_length'] = L
 
-sim['omega_rotor'] = omega_rotor
+sim['rpm'] = omega_rotor
 sim['load_torque_rotor'] = load_torque_rotor
 
 sim.run()
