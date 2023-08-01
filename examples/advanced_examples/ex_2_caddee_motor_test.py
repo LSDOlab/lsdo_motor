@@ -123,8 +123,8 @@ hover_model.register_output(ac_states)
 motor_sizing = MotorSizing(
     rotor_component=rotor_disk
 )
-motor_sizing.set_module_input('motor_diameter', 0.182, dv_flag=True, lower=0.12, upper=0.3, scaler=10.)
-motor_sizing.set_module_input('motor_length', 0.086, dv_flag=True, lower=0.06, upper=0.1, scaler=100.)
+motor_sizing.set_module_input('motor_diameter', 0.08, dv_flag=True, lower=0.12, upper=0.3, scaler=10.)
+motor_sizing.set_module_input('motor_length', 0.05, dv_flag=True, lower=0.06, upper=0.1, scaler=100.)
 
 motor_mass, motor_cg, motor_inertia, motor_parameters = motor_sizing.evaluate() 
 hover_model.register_output(motor_mass) # this would then feed into some mass properties solver

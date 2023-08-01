@@ -22,7 +22,8 @@ class TorqueMassModel(Model):
         self.parameters.declare('fitting_order')
         self.fitting_coeff = {
             '0':[1],
-            '1':[26.0489, -112.1432],
+            # '1':[26.0489, -112.1432],
+            '1':[25., 25.], # close to the one above, but crosses the x axis when motor mass < 0
             '2':[0.4840, 3.3169, 60.8142],
             '3':[1, 1, 1 ,1],
             '4':[1, 1, 1, 1, 1],
