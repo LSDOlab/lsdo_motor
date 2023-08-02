@@ -268,14 +268,14 @@ class TC1MotorAnalysisModel(ModuleCSDL):
             )
     
             max_torque_constraint = self.register_output(name='torque_delta',
-                                                            var=T_upper_lim_curve-load_torque)
+                                                            var=(T_upper_lim_curve-load_torque)/T_upper_lim_curve)
         else:
             T_upper_lim_curve = self.register_output(
                 'T_upper_lim_curve',
                 csdl.expand(T_em_max, (num_active_nodes, ))
             )
             max_torque_constraint = self.register_output(name='torque_delta',
-                                                            var=T_upper_lim_curve-load_torque)
+                                                            var=(T_upper_lim_curve-load_torque)/T_upper_lim_curve)
         
 
 
