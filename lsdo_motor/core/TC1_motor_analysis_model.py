@@ -90,6 +90,8 @@ class TC1MotorAnalysisModel(ModuleCSDL):
         self.parameters.declare('flux_weakening', default=False)
         self.parameters.declare('use_caddee', default=True)
 
+        self.parameters.declare('gear_ratio', default=4.)
+
 
         self.motor_variable_names = [
             'outer_stator_radius', 'pole_pitch', 'tooth_pitch', 'air_gap_depth', 'l_ef',
@@ -181,7 +183,7 @@ class TC1MotorAnalysisModel(ModuleCSDL):
         PsiF_expanded = self.register_output('PsiF_expanded', csdl.expand(PsiF, (num_active_nodes,)))
 
         # ========================= GEARBOX =========================
-        gear_ratio = 4.
+        gear_ratio = self.parameters['gear_ratio']
         omega = self.register_output('omega', omega_rotor * gear_ratio * 2*np.pi/60)
         load_torque = self.register_output('load_torque', load_torque_rotor/gear_ratio)
 

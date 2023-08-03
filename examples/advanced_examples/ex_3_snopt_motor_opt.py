@@ -30,6 +30,8 @@ class FullMotorModel(csdl.Model):
         fit_coeff_dep_H = self.parameters['fit_coeff_dep_H']
         fit_coeff_dep_B = self.parameters['fit_coeff_dep_B']
 
+        
+
         self.add(
             TC1MotorSizingModel(
                 pole_pairs=pole_pairs,
@@ -52,7 +54,8 @@ class FullMotorModel(csdl.Model):
                 fit_coeff_dep_H=fit_coeff_dep_H,
                 num_nodes=num_nodes,
                 num_active_nodes=num_active_nodes,
-                use_caddee=False
+                use_caddee=False,
+                gear_ratio=1.
             ),
             'analysis_model'
         )
@@ -74,6 +77,17 @@ m = FullMotorModel(
     V_lim=400
 )
 
+m.create_input('motor_diameter')
+m.create_input('motor_length')
+
+m.add_constraint('efficiency_active', lower=0.90)
+m.add_constraint('torque_delta', lower=.3)
+
+m.add_design_variable('motor_diameter', lower = 0.1)
+m.add_design_variable('motor_length', lower = 0.06)
+
+m.add_objective('motor_mass')
+
 sim = Simulator(m)
 sim['motor_diameter'] = D_i
 sim['motor_length'] = L
@@ -83,3 +97,26 @@ sim['load_torque_rotor'] = load_torque_rotor
 
 sim.run()
 print(sim['motor_mass'])
+
+from modopt.csdl_library import CSDLProblem
+from modopt.snopt_library import SNOPT
+prob = CSDLProblem(problem_name='motor_opt_test', simulator=sim)
+
+optimizer = SNOPT(
+    prob, 
+    Major_iterations=50, 
+    Major_optimality=1e-5, 
+    Major_feasibility=1e-5,
+    append2file=True,
+    Iteration_limit=500000,
+    Print_frequency=1
+)
+
+# optimizer = SLSQP(prob, maxiter=500, ftol=1E-5)
+
+import time
+t_start = time.time()
+optimizer.solve()
+optimizer.print_results()
+t_end = time.time()
+opt_time = t_end - t_start

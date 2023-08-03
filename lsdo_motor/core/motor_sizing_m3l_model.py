@@ -4,7 +4,7 @@ from lsdo_motor.core.TC1_motor_sizing_model import TC1MotorSizingModel
 
 class MotorSizing(m3l.ExplicitOperation):
     def initialize(self, kwargs):
-        self.parameters.declare('rotor_component')
+        self.parameters.declare('rotor_component', default='lsdolab')
         self.parameters.declare('pole_pairs', default=6)
         self.parameters.declare('phases', default=3)
         self.parameters.declare('num_slots', default=36)
@@ -28,8 +28,10 @@ class MotorSizing(m3l.ExplicitOperation):
         self.I_rated = self.parameters['rated_current']
         component = self.parameters['rotor_component']
 
-        self.component_name = component.parameters['name']
-        # self.component_name = component.name
+        if isinstance(component, str):
+            self.component_name = component
+        else:
+            self.component_name = component.parameters['name']
 
         self.name = f'{self.component_name}_motor_sizing_model'
         self.arguments = {}
