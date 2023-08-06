@@ -144,4 +144,4 @@ def gen_efficiency_map(L, D, V_lim=400, I_rated=115, plot=True, flux_weakening=T
     return sim_eff_map
 
 if __name__ == '__main__':
-    sim = gen_efficiency_map(L=0.086, D=0.182, V_lim=400, num_RPM_step=20, num_torque_step=20, flux_weakening=False)
+    sim = gen_efficiency_map(L=0.086, D=0.182, V_lim=400, num_RPM_step=20, num_torque_step=20, flux_weakening=True)

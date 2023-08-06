@@ -184,7 +184,7 @@ class TC1MotorAnalysisModel(ModuleCSDL):
 
         # ========================= GEARBOX =========================
         gear_ratio = self.parameters['gear_ratio']
-        omega = self.register_output('omega', omega_rotor * gear_ratio * 2*np.pi/60)
+        omega = self.register_output('omega', omega_rotor * gear_ratio * 2*np.pi*p/60)
         load_torque = self.register_output('load_torque', load_torque_rotor/gear_ratio)
 
         # ========================= FINDING UPPER TORQUE LIMIT (DISCRIMINANT = 0 CASE) =========================
