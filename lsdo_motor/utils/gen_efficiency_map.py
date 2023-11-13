@@ -9,7 +9,7 @@ sns.set()
 from lsdo_motor.utils.efficiency_map_models import ExtractUpperLimitTorqueModel, EfficiencyMapAnalysisModel
 
 def gen_efficiency_map(L, D, V_lim=400, I_rated=115, plot=True, flux_weakening=True,
-                       p=6, m=3, Z=36, RPM_limit=15000, num_RPM_step=30, num_torque_step=80):
+                       p=6, m=3, Z=36, RPM_limit=15000, num_RPM_step=30, num_torque_step=80, ax_plot=None):
     '''
     This function generates the data and a figure for the efficiency map of a PMSM.
     Inputs:
@@ -123,25 +123,44 @@ def gen_efficiency_map(L, D, V_lim=400, I_rated=115, plot=True, flux_weakening=T
     levels_f = np.linspace(0,1,31)
     levels = np.array([30, 80, 88, 90, 92, 93, 94, 95, 96, 97, 98])*0.01
     # levels = np.array([0.8, 0.9, 0.93, 0.96, 0.97, 0.975, 0.977, 0.9784])
-    sns.set_style("ticks")
-    plt.figure(2)
-    plt.contourf(omega_grid_plot*60/2/p/np.pi, torque_grid_plot, efficiency_grid, cmap='jet', levels=levels_f)
-    # plt.contourf(omega_grid_plot*60/2/np.pi, torque_grid_plot, efficiency_grid, cmap='jet', levels=levels_f)
-    # plt.colorbar()
-    plt.clim(0,1)
-    contours = plt.contour(omega_grid_plot*60/2/p/np.pi, torque_grid_plot, efficiency_grid, colors='black', levels=levels)
-    # contours = plt.contour(omega_grid_plot*60/2/np.pi, torque_grid_plot, efficiency_grid, colors='black', levels=levels)
-    plt.clabel(contours, inline=True, fontsize=12)
-    plt.plot(omega_range*60/2/p/np.pi, upper_torque_curve, 'k', linewidth=3)
-    plt.xlabel('Speed [RPM]', fontsize=12)
-    plt.ylabel('Torque [Nm]', fontsize=12)
-    plt.xticks(ticks=np.arange(0,15001,3000), fontsize=12)
-    plt.yticks(fontsize=12)
-    plt.grid(False)
-    plt.show()
+    
+    if ax_plot:
+        ax_plot.contourf(omega_grid_plot*60/2/p/np.pi, torque_grid_plot, efficiency_grid, cmap='RdGy_r', levels=levels_f)
+        # plt.contourf(omega_grid_plot*60/2/np.pi, torque_grid_plot, efficiency_grid, cmap='jet', levels=levels_f)
+        # plt.co
+        # lorbar()
+        # ax_plot.clim(0,1)
+        contours = ax_plot.contour(omega_grid_plot*60/2/p/np.pi, torque_grid_plot, efficiency_grid, colors='black', levels=levels)
+        # contours = plt.contour(omega_grid_plot*60/2/np.pi, torque_grid_plot, efficiency_grid, colors='black', levels=levels)
+        ax_plot.clabel(contours, inline=True, fontsize=12)
+        ax_plot.plot(omega_range*60/2/p/np.pi, upper_torque_curve, 'k', linewidth=3)
+        ax_plot.set_xlabel('Speed [RPM]', fontsize=12)
+        ax_plot.set_ylabel('Torque [Nm]', fontsize=12)
+        # ax_plot.set_xticks(ticks=np.arange(0,15001,3000), fontsize=12)
+        # ax_plot.set_yticks(fontsize=12)
+        ax_plot.grid(False)
+        
+
+    else:
+        sns.set_style("ticks")
+        plt.figure(2)
+        plt.contourf(omega_grid_plot*60/2/p/np.pi, torque_grid_plot, efficiency_grid, cmap='RdGy_r', levels=levels_f)
+        # plt.contourf(omega_grid_plot*60/2/np.pi, torque_grid_plot, efficiency_grid, cmap='jet', levels=levels_f)
+        # plt.colorbar()
+        plt.clim(0,1)
+        contours = plt.contour(omega_grid_plot*60/2/p/np.pi, torque_grid_plot, efficiency_grid, colors='black', levels=levels)
+        # contours = plt.contour(omega_grid_plot*60/2/np.pi, torque_grid_plot, efficiency_grid, colors='black', levels=levels)
+        plt.clabel(contours, inline=True, fontsize=12)
+        plt.plot(omega_range*60/2/p/np.pi, upper_torque_curve, 'k', linewidth=3)
+        plt.xlabel('Speed [RPM]', fontsize=12)
+        plt.ylabel('Torque [Nm]', fontsize=12)
+        plt.xticks(ticks=np.arange(0,15001,3000), fontsize=12)
+        plt.yticks(fontsize=12)
+        plt.grid(False)
+        plt.show()
     # endregion
 
-    return sim_eff_map
+    return sim_eff_map, ax_plot
 
 if __name__ == '__main__':
     sim = gen_efficiency_map(L=0.086, D=0.182, V_lim=400, num_RPM_step=20, num_torque_step=20, flux_weakening=True)

@@ -113,7 +113,7 @@ class InductanceModel(Model):
             fit_coeff_dep_B = self.fit_coeff_dep_B,
         )
 
-        eps = self.declare_variable('eps', 1e-5)
+        eps = self.create_input('eps', 1e-5)
         Inductance_MEC = self.create_implicit_operation(q_inductance_model)
         Inductance_MEC.declare_state('phi_aq', residual='inductance_residual', bracket=(eps, phi_air))
 

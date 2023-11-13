@@ -11,7 +11,6 @@ from lsdo_motor.core.motor_submodels.TC1_flux_weakening_model import FluxWeakeni
 from lsdo_motor.core.motor_submodels.TC1_mtpa_model import MTPAModel
 from lsdo_motor.core.motor_submodels.TC1_post_processing_model import PostProcessingModel
 
-from lsdo_modules.module_csdl.module_csdl import ModuleCSDL
 
 '''
 THIS MODEL CONTAINS THE ENTIRE MOTOR ANALYSIS MODEL.
@@ -76,7 +75,7 @@ class ParseActiveOperatingConditions(csdl.CustomExplicitOperation):
         derivatives['load_torque_rotor_active', 'load_torque_rotor'] = np.transpose(self.selection_indices)
 
 
-class TC1MotorAnalysisModel(ModuleCSDL):
+class TC1MotorAnalysisModel(csdl.Model):
     def initialize(self, model_test=False):
         self.parameters.declare('pole_pairs') # 6
         self.parameters.declare('phases') # 3
@@ -119,7 +118,7 @@ class TC1MotorAnalysisModel(ModuleCSDL):
         D_i = self.declare_variable('motor_diameter') # Diameter (DV or input)
         # T_em_max = self.declare_variable('T_em_max') # Max torque (structural)
         # Rdc = self.declare_variable('Rdc') # Resistance
-        motor_parameters = self.register_module_input('motor_parameters', shape=(27,)) # array of motor sizing outputs
+        motor_parameters = self.declare_variable('motor_parameters', shape=(27,)) # array of motor sizing outputs
         for i in range(motor_parameters.shape[0]-2):
             self.register_output(self.motor_variable_names[i], motor_parameters[i])
 
@@ -160,7 +159,7 @@ class TC1MotorAnalysisModel(ModuleCSDL):
 
         # ========================= TORQUE AND RPM INPUT ADJUSTMENT =========================
         omega_rotor = self.declare_variable('rpm', shape=(num_nodes,))
-        load_torque_rotor = self.register_module_input('load_torque_rotor', shape=(num_nodes,))
+        load_torque_rotor = self.declare_variable('load_torque_rotor', shape=(num_nodes,))
 
         if num_active_nodes is None:
             num_active_nodes_orig = num_active_nodes
@@ -247,7 +246,7 @@ class TC1MotorAnalysisModel(ModuleCSDL):
         if num_active_nodes_orig is None:
             input_power = self.declare_variable('input_power_active', shape=(num_active_nodes,))
             # self.register_output('input_power', input_power * 1.)
-            self.register_module_output('input_power', input_power * 1., promotes=False)
+            self.register_output('input_power', input_power * 1.)
         else:
             input_power_active = self.declare_variable('input_power_active', shape=(num_active_nodes,))
             input_power = csdl.matvec(selection_indices, input_power_active)

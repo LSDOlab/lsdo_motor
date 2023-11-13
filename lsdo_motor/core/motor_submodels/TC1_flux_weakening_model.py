@@ -36,7 +36,7 @@ class FluxWeakeningBracketModel(Model):
         )
         Iq_fw_bracket_implicit_op.nonlinear_solver = NewtonSolver(
             solve_subsystems=False,
-            maxiter=10000,
+            maxiter=100,
             iprint=True
         )
         Iq_fw_bracket_implicit_op.linear_solver = ScipyKrylov()

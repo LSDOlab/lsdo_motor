@@ -5,7 +5,7 @@ from python_csdl_backend import Simulator
 from csdl import Model, GraphRepresentation
 import csdl
 
-from lsdo_modules.module_csdl.module_csdl import ModuleCSDL
+
 
 class TorqueMassModel(Model):
     '''
@@ -49,7 +49,7 @@ class TorqueMassModel(Model):
             self.fit_torque_to_mass(motor_mass)
         )
 
-class TC1MotorSizingModel(ModuleCSDL):
+class TC1MotorSizingModel(csdl.Model):
     '''
     INPUTS TO THIS MODEL:
         - length and diameter of motor (as DVs or inputs)
@@ -66,7 +66,6 @@ class TC1MotorSizingModel(ModuleCSDL):
         self.parameters.declare('phases') # 3
         self.parameters.declare('num_slots') # 36
         self.parameters.declare('rated_current')
-        self.parameters.declare('component_name')
 
     def define(self):
         # --- DEFINING INPUTS FROM INITIALIZE & BASIC PARAMETERS --- 
@@ -79,8 +78,8 @@ class TC1MotorSizingModel(ModuleCSDL):
         mu_0 = np.pi*4e-7
 
         # --- RATED PARAMETERS AS INPUTS FROM OPTIMIZER ---
-        D_i = self.register_module_input('motor_diameter', shape=(1,), computed_upstream=False) # inner radius of stator
-        L = self.register_module_input('motor_length', shape=(1,), computed_upstream=False) # effective length of motor
+        D_i = self.declare_variable('motor_diameter', shape=(1,)) # inner radius of stator
+        L = self.declare_variable('motor_length', shape=(1,)) # effective length of motor
         rated_omega = 5000
         eta_0 = 0.96 # ASSUMED INITIAL EFFICIENCY; MATLAB CODE STARTS WITH 0.88
         PF = 1 # POWER FACTOR
@@ -116,7 +115,7 @@ class TC1MotorSizingModel(ModuleCSDL):
         # these lines of code will cause errors compared to MATLAB code bc Zeyu
         # uses floor to round, and we cannot do that
 
-        N_p = self.declare_variable('N_p', 2.)
+        N_p = self.create_input('N_p', 2.)
 
         J = 5. # target current density
         Acu = I_w/(a*J*N_p) * 10.**(-6.)
@@ -168,7 +167,7 @@ class TC1MotorSizingModel(ModuleCSDL):
         Br = 1+(T-20)*alpha_Br/100*(1-IL/100)*Br_20
 
         Hc_20 = 907000; # coercivity
-        Hc = (1+(T-20)*alpha_Br/100)*(1- IL/100)*Hc_20;
+        Hc = (1+(T-20)*alpha_Br/100)*(1- IL/100)*Hc_20
         mu_r = Br/mu_0/Hc; # relative permeability
 
         # Br = 1.2 # MAGNET REMANENCE
@@ -223,7 +222,7 @@ class TC1MotorSizingModel(ModuleCSDL):
         mass_deficit_slot = A_slot*l_ef*rho_fe*Z*1e3
         mass_deficit_mag = 2*p*bm*hm*l_ef*rho_fe*1e3
 
-        motor_mass = self.register_module_output(
+        motor_mass = self.register_output(
             'motor_mass', 
             (mass_cu-mass_deficit_slot) + (mass_magnet-mass_deficit_mag) + \
             np.pi*l_ef*rho_fe*((outer_stator_radius/2)**2 - (D_shaft/2)**2)*1e3
@@ -237,7 +236,7 @@ class TC1MotorSizingModel(ModuleCSDL):
 
         # POPULATE motor_parameters WITH THE RELEVANT MOTOR VARIABLES
         # THE ONLY ONES THAT WILL BE IGNORED ARE motor_mass AND resistance (Rdc)
-        motor_parameters = self.register_module_output(
+        motor_parameters = self.create_output(
             'motor_parameters',
             shape=(27,),
             val=0.
@@ -272,16 +271,15 @@ class TC1MotorSizingModel(ModuleCSDL):
         motor_parameters[26] = max_torque
 
         # MOTOR CG AND INERTIA COMPUTATION
-        component_name = self.parameters['component_name']
         units = 'ft' # CHANGE LATER TO MAKE MORE GENERAL
         if units == 'ft':
-            origin = self.register_module_input(f'{component_name}_origin', shape=(3,), promotes=True) * 0.3048
+            origin = self.declare_variable(f'motor_origin', shape=(3,)) * 0.3048
         else:
-            origin = self.register_module_input(f'{component_name}_origin', shape=(3,), promotes=True)
+            origin = self.declare_variable(f'motor_origin', shape=(3,))
 
         x, y, z = origin[0], origin[1], origin[2]
 
-        motor_cg = self.register_module_output(f'{component_name}_motor_cg', origin * 1.)
+        motor_cg = self.register_output(f'motor_cg', origin * 1.)
 
         ixx = motor_mass * (y**2 + z**2)
         ixy = -motor_mass * x*y
@@ -293,7 +291,7 @@ class TC1MotorSizingModel(ModuleCSDL):
         izy = iyz * 1.
         izz = motor_mass * (x**2 + y**2)
 
-        inertia_tensor = self.register_module_output(f'{component_name}_motor_inertia', shape=(3,3), val=0.)
+        inertia_tensor = self.create_output(f'motor_inertia', shape=(3,3), val=0.)
         inertia_tensor[0, 0] = csdl.reshape(ixx, (1, 1))
         inertia_tensor[0, 1] = csdl.reshape(ixy, (1, 1))
         inertia_tensor[0, 2] = csdl.reshape(ixz, (1, 1))
@@ -304,9 +302,9 @@ class TC1MotorSizingModel(ModuleCSDL):
         inertia_tensor[2, 1] = csdl.reshape(izy, (1, 1))
         inertia_tensor[2, 2] = csdl.reshape(izz, (1, 1))
 
-        self.register_module_output('mass', motor_mass * 1.)
-        self.register_module_output('cg_vector', motor_cg * 1.)
-        self.register_module_output('inertia_tensor', inertia_tensor * 1.)
+        self.register_output('mass', motor_mass * 1.)
+        self.register_output('cg_vector', motor_cg * 1.)
+        self.register_output('inertia_tensor', inertia_tensor * 1.)
 
 
 
