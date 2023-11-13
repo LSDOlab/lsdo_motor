@@ -18,6 +18,7 @@ class FullMotorModel(csdl.Model):
         self.parameters.declare('rated_current', default=120.)
         self.parameters.declare('fit_coeff_dep_H', default=def_coeff_H) # FITTING COEFFICIENTS (X = H, B = f(H))
         self.parameters.declare('fit_coeff_dep_B', default=def_coeff_B) # FITTING COEFFICIENTS (X = B, H = g(B))
+        self.parameters.declare('gear_ratio', default=4.)
 
     def define(self):
         num_nodes = self.parameters['num_nodes']
@@ -29,6 +30,7 @@ class FullMotorModel(csdl.Model):
         I_rated = self.parameters['rated_current']
         fit_coeff_dep_H = self.parameters['fit_coeff_dep_H']
         fit_coeff_dep_B = self.parameters['fit_coeff_dep_B']
+        gear_ratio = self.parameters['gear_ratio']
 
         self.add(
             TC1MotorSizingModel(
@@ -36,7 +38,6 @@ class FullMotorModel(csdl.Model):
                 phases=phases,
                 num_slots=num_slots,
                 rated_current=I_rated,
-                # component_name='dummy'
             ),
             'sizing_model'
         )
@@ -52,34 +53,8 @@ class FullMotorModel(csdl.Model):
                 fit_coeff_dep_H=fit_coeff_dep_H,
                 num_nodes=num_nodes,
                 num_active_nodes=num_active_nodes,
-                use_caddee=False
+                use_caddee=False,
+                gear_ratio=gear_ratio
             ),
             'analysis_model'
         )
-
-
-# D_i = 0.182
-# L = 0.086
-
-D_i = 0.11
-L = 0.08
-
-load_torque_rotor = np.array([172.317])
-omega_rotor = np.array([3375.10])
-
-num_nodes=len(load_torque_rotor)
-
-m = FullMotorModel(
-    num_nodes=num_nodes,
-    V_lim=400
-)
-
-sim = Simulator(m)
-sim['motor_diameter'] = D_i
-sim['motor_length'] = L
-
-sim['rpm'] = omega_rotor
-sim['load_torque_rotor'] = load_torque_rotor
-
-sim.run()
-print(sim['motor_mass'])

@@ -179,7 +179,7 @@ class EMTorqueImplicitModel(Model):
         P_em_loss = P_eddy + P_h + P_stress + P_wo + Pm + P_eddy_s
         P_loss = P_copper + P_em_loss
         input_power_active = self.register_output('input_power_active', P0 + P_loss)
-        efficiency_active = self.register_output('efficiency_active', P0/input_power_active)
+        efficiency_active = self.register_output('efficiency', P0/input_power_active)
         
         torque_equality = load_torque - efficiency_active*T_em
         # torque_equality = T_em - load_torque - P_em_loss/omega
@@ -267,26 +267,26 @@ class EMTorqueModel(Model):
                 T_em, I_d_upper_bracket_list_dummy, Id_upper_lim_dummy, a1_dummy, a2_dummy, a3_dummy, a4_dummy, a5_dummy, Iq_fw_dummy, Iq_MTPA_dummy, Id_fw_dummy, current_amplitude, output_power, input_power_active,efficiency_active = implicit_torque_operation(
                     load_torque, omega, motor_parameters, R_expanded, L_d_expanded, L_q_expanded, 
                     PsiF_expanded, Id_fw_bracket, I_q_rated, B_delta, D_i, 
-                    expose=['I_d_upper_bracket_list_dummy', 'Id_upper_lim_dummy', 'a1_dummy','a2_dummy','a3_dummy','a4_dummy','a5_dummy','Iq_fw_dummy', 'Iq_MTPA_dummy', 'Id_fw_dummy', 'current_amplitude', 'output_power', 'input_power_active', 'efficiency_active']
+                    expose=['I_d_upper_bracket_list_dummy', 'Id_upper_lim_dummy', 'a1_dummy','a2_dummy','a3_dummy','a4_dummy','a5_dummy','Iq_fw_dummy', 'Iq_MTPA_dummy', 'Id_fw_dummy', 'current_amplitude', 'output_power', 'input_power_active', 'efficiency']
                 )
             elif mode == 'efficiency_map':
                 load_torque, I_d_upper_bracket_list_dummy, Id_upper_lim_dummy, a1_dummy, a2_dummy, a3_dummy, a4_dummy, a5_dummy, Iq_fw_dummy, Iq_MTPA_dummy, Id_fw_dummy, current_amplitude, output_power, input_power_active,efficiency_active = implicit_torque_operation(
                     T_em, omega, motor_parameters, R_expanded, L_d_expanded, L_q_expanded, 
                     PsiF_expanded, Id_fw_bracket, I_q_rated, B_delta, D_i, 
-                    expose=['I_d_upper_bracket_list_dummy', 'Id_upper_lim_dummy', 'a1_dummy','a2_dummy','a3_dummy','a4_dummy','a5_dummy','Iq_fw_dummy', 'Iq_MTPA_dummy', 'Id_fw_dummy', 'current_amplitude', 'output_power', 'input_power_active', 'efficiency_active']
+                    expose=['I_d_upper_bracket_list_dummy', 'Id_upper_lim_dummy', 'a1_dummy','a2_dummy','a3_dummy','a4_dummy','a5_dummy','Iq_fw_dummy', 'Iq_MTPA_dummy', 'Id_fw_dummy', 'current_amplitude', 'output_power', 'input_power_active', 'efficiency']
                 )
         else:
             if mode == 'input_load':
                 T_em, Iq_MTPA_dummy, current_amplitude, output_power, input_power_active,efficiency_active, copper_loss = implicit_torque_operation(
                     load_torque, omega, motor_parameters, R_expanded, L_d_expanded, L_q_expanded, 
                     PsiF_expanded, I_q_rated, B_delta, D_i, 
-                    expose=['Iq_MTPA_dummy', 'current_amplitude', 'output_power', 'input_power_active', 'efficiency_active', 'copper_loss']
+                    expose=['Iq_MTPA_dummy', 'current_amplitude', 'output_power', 'input_power_active', 'efficiency', 'copper_loss']
                 )
             elif mode == 'efficiency_map':
                 load_torque, Iq_MTPA_dummy, current_amplitude, output_power, input_power_active,efficiency_active = implicit_torque_operation(
                     T_em, omega, motor_parameters, R_expanded, L_d_expanded, L_q_expanded, 
                     PsiF_expanded, I_q_rated, B_delta, D_i, 
-                    expose=['Iq_MTPA_dummy', 'current_amplitude', 'output_power', 'input_power_active', 'efficiency_active']
+                    expose=['Iq_MTPA_dummy', 'current_amplitude', 'output_power', 'input_power_active', 'efficiency']
                 )
 
         

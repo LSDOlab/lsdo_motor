@@ -1,10 +1,14 @@
 __version__ = '0.0.1'
 
-from lsdo_motor.core.motor_analysis_m3l_model import MotorAnalysis, evaluate_multiple_motor_analysis_models
-from lsdo_motor.core.motor_sizing_m3l_model import MotorSizing, evaluate_multiple_motor_sizing_models
+try:
+    from lsdo_motor.core.motor_analysis_m3l_model import MotorAnalysis, evaluate_multiple_motor_analysis_models
+    from lsdo_motor.core.motor_sizing_m3l_model import MotorSizing, evaluate_multiple_motor_sizing_models
+except:
+    pass
 
 from lsdo_motor.core.TC1_motor_analysis_model import TC1MotorAnalysisModel
 from lsdo_motor.core.TC1_motor_sizing_model import TC1MotorSizingModel
+from lsdo_motor.core.TC1_full_motor_model import FullMotorModel
 
 from pathlib import Path
 ROOT = Path(__file__).parents[0]
