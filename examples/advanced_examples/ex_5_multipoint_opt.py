@@ -11,7 +11,7 @@ class MultipointMotorModel(csdl.Model):
         self.parameters.declare('nominal_rotor_torque')
         self.parameters.declare('nominal_rotor_RPM')
         self.parameters.declare('gear_ratio')
-        self.parameters.declare('diameter_dv_lower_bound', default=0.1)
+        self.parameters.declare('diameter_dv_lower_bound', default=0.06)
         self.parameters.declare('length_dv_lower_bound', default=0.06)
         self.parameters.declare('torque_delta_ratio_bound', default=0.)
 
@@ -97,8 +97,8 @@ D_i = 0.11
 L = 0.08
 
 # Data for max operating condition
-max_rotor_torque = 800.
-max_rotor_RPM = 3700.
+max_rotor_torque = 400.
+max_rotor_RPM = 5000.
 
 # Data for nominal operating condition
 nominal_rotor_torque = 172.317
@@ -127,8 +127,6 @@ sim['motor_length'] = L
 
 # forward evaluation (not necessary)
 sim.run()
-print(sim['motor_mass']) # syntax for printing outputs
-print(sim['nominal_efficiency']) # syntax for printing outputs
 
 # optimization
 from modopt.csdl_library import CSDLProblem
@@ -138,3 +136,15 @@ optimizer = SLSQP(prob, maxiter=500, ftol=1E-5)
 
 optimizer.solve()
 optimizer.print_results()
+
+# printing relevant outputs
+print('Optimized diameter (m): ', sim['motor_diameter'])
+print('Optimized length (m): ', sim['motor_length'])
+print('Optimized mass (kg): ', sim['motor_mass'])
+print('Optimized efficiency at nominal operation (W/W): ', sim['nominal_efficiency'])
+print('Max torque delta for optimized motor ((Nm)/(Nm)): ', sim['max_torque_delta'])
+print('Nominal input power (kW): ', sim['input_power'][0] / 1000.)
+print('Maximum input power (kW): ', sim['input_power'][1] / 1000.)
+
+
+# add print statements to clearly identify outputs (torque delta, power, etc.)
