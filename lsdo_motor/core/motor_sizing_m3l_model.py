@@ -9,8 +9,8 @@ from typing import List
 class MotorSizingOutputs:
     """Data class for low-fidelity motor sizing varaibles"""
     mass : m3l.Variable
-    cg : m3l.Variable
-    inertia : m3l.Variable
+    cg_vector : m3l.Variable
+    inertia_tensor : m3l.Variable
     motor_parameters : m3l.Variable
 
 
@@ -71,8 +71,8 @@ class MotorSizing(m3l.ExplicitOperation):
 
         outputs = MotorSizingOutputs(
             mass=motor_mass,
-            cg=motor_cg,
-            inertia=motor_inertia,
+            cg_vector=motor_cg,
+            inertia_tensor=motor_inertia,
             motor_parameters=motor_parameters,
         )
 

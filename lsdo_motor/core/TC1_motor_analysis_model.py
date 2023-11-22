@@ -74,6 +74,16 @@ class ParseActiveOperatingConditions(csdl.CustomExplicitOperation):
         derivatives['omega_rotor_active', 'rpm'] = np.transpose(self.selection_indices)
         derivatives['load_torque_rotor_active', 'load_torque_rotor'] = np.transpose(self.selection_indices)
 
+class MotorParametersModel(csdl.Model):
+    def initialize(self):
+        self.parameters.declare('motor_variable_names')
+
+    def define(self):
+        motor_variable_names = self.parameters['motor_variable_names']
+
+        motor_parameters = self.declare_variable('motor_parameters', shape=(27,)) # array of motor sizing outputs
+        for i in range(motor_parameters.shape[0]-2):
+            self.register_output(motor_variable_names[i], motor_parameters[i])
 
 class TC1MotorAnalysisModel(csdl.Model):
     def initialize(self, model_test=False):
@@ -118,9 +128,12 @@ class TC1MotorAnalysisModel(csdl.Model):
         D_i = self.declare_variable('motor_diameter') # Diameter (DV or input)
         # T_em_max = self.declare_variable('T_em_max') # Max torque (structural)
         # Rdc = self.declare_variable('Rdc') # Resistance
+        # motor_parameters = self.declare_variable('motor_parameters', shape=(27,)) # array of motor sizing outputs
+        # for i in range(motor_parameters.shape[0]-2):
+        #     self.register_output(self.motor_variable_names[i], motor_parameters[i])
         motor_parameters = self.declare_variable('motor_parameters', shape=(27,)) # array of motor sizing outputs
-        for i in range(motor_parameters.shape[0]-2):
-            self.register_output(self.motor_variable_names[i], motor_parameters[i])
+
+        self.add(MotorParametersModel(motor_variable_names=self.motor_variable_names), 'motor_parameters_model')
 
         if use_caddee:
             Rdc = self.register_output('Rdc', motor_parameters[-2])
