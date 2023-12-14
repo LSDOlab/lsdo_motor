@@ -95,6 +95,7 @@ def evaluate_multiple_motor_sizing_models(
     else:
         num_models = len(motor_length_list)
 
+    print(motor_origin_list)
     if len(motor_origin_list) != num_models:
         raise Exception("Number of specified motor origins not equal to number of motor diameters/motor lengths")
     

@@ -10,6 +10,7 @@ class MotorAnalysisOutputs:
     """Data class for motor analysis outputs of low-fi model"""
     input_power : m3l.Variable
     efficiency : m3l.Variable
+    torque_delta : m3l.Variable
 
 def_coeff_H = np.array([1.92052530e-03,  1.03633835e+01, -2.98809161e+00])
 def_coeff_B = np.array([1.12832651, 1., 1., 1.])
@@ -80,7 +81,13 @@ class MotorAnalysis(m3l.ExplicitOperation):
             operation=self
         )
 
-        outputs = MotorAnalysisOutputs(input_power=input_power, efficiency=efficiency)
+        torque_delta = m3l.Variable(
+            name='torque_delta',
+            shape=(self.num_nodes, ),
+            operation=self,
+        )
+
+        outputs = MotorAnalysisOutputs(input_power=input_power, efficiency=efficiency, torque_delta=torque_delta)
 
         return outputs #input_power, efficiency
     
@@ -93,10 +100,13 @@ def evaluate_multiple_motor_analysis_models(
         name_prefix : str,
         m3l_model : m3l.Model=None,
         flux_weakening : bool=False,
+        torque_delta : float=None,
 ) -> List[MotorAnalysisOutputs]: 
     """helper function for evaluating multiple motor analysis models"""
 
     if len(rotor_outputs_list) != len(motor_sizing_list):
+        print(len(rotor_outputs_list))
+        print(len(motor_sizing_list))
         raise Exception("Number of rotor ouputs not equal to number of motor parameters")
     
     num_models = len(rotor_outputs_list)
@@ -119,5 +129,7 @@ def evaluate_multiple_motor_analysis_models(
 
         if m3l_model is not None:
             m3l_model.register_output(motor_outputs)
+            if torque_delta is not None:
+                m3l_model.add_constraint(motor_outputs.torque_delta, lower=torque_delta)
 
     return motor_outputs_list
